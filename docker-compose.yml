@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+#        image: ${CI_REGISTRY_IMAGE}/catalog_product:${CI_COMMIT_SHORT_SHA}
+        container_name: catalog_api
+        restart: on-failure
+        ports:
+        - "8012:8000"
+        networks:
+        - catalog_network
+        environment:
+        - DB_USER
+        - DB_PASSWORD
+        - DB_HOST
+        - DB_PORT
+        - DB_NAME
+        - REDIS_BROKER_URL=redis://redis:6379/0
+        depends_on:
+        - db
+        - redis
+
+    db:
+        image: postgres
+        container_name: $DB_HOST
+        restart: always
+        environment:
+        - POSTGRES_DB=$DB_NAME
+        - POSTGRES_USER=$DB_USER
+        - POSTGRES_PASSWORD=$DB_PASSWORD
+        networks:
+        - catalog_network
+        ports:
+        - 54320:5432
+
+    redis:
+        image: redis
+        container_name: redis
+        restart: always
+        networks:
+            - catalog_network
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+        - 8080:8080
+        networks:
+        - catalog_network
+
+
+networks:
+    catalog_network:
+        driver: bridge
+

@@ -1,0 +1,72 @@
+stages:
+  - build
+  - deploy
+
+build:
+    stage: build
+    only:
+    - main
+    - developer
+    image: docker:latest
+    services:
+    - docker:dind
+    tags:
+    - build
+    script:
+    #создание докер образа
+    - docker build -t catalog_product .
+    # авторизация в докер репозитории гитлаба
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    #присваиваю тэг равный id комита
+    - docker tag catalog_product:latest $CI_REGISTRY_IMAGE/catalog_product:$CI_COMMIT_SHORT_SHA
+    # пуш в репозиторий
+    - docker push $CI_REGISTRY_IMAGE/catalog_product:$CI_COMMIT_SHORT_SHA
+    after_script:
+    # удаляю образ
+    - docker rmi $CI_REGISTRY_IMAGE/catalog_product:$CI_COMMIT_SHORT_SHA catalog_product:latest
+
+developer_deploy:
+    stage: deploy
+    only:
+    - developer
+    image: docker:latest
+    environment:
+        name: developer
+        url: http://172.31.15.38:8012
+    services:
+    - docker:dind
+    tags:
+    - dev
+    script:
+    # авторизация в докер репозитории гит
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # загружаю образ
+    - docker pull $CI_REGISTRY_IMAGE/catalog_product:$CI_COMMIT_SHORT_SHA
+    # запускаю docker-compose
+    - docker compose up -d
+    after_script:
+    # удаляю ненужные образы
+    - docker image prune -af
+
+production_deploy:
+    stage: deploy
+    only:
+    - main
+    image: docker:latest
+    environment:
+        name: production
+        url: http://172.31.15.36:8012
+    services:
+    - docker:dind
+    tags:
+    - prod
+    script:
+    # авторизация в докер репозитории гит
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # загружаю образ
+    - docker pull $CI_REGISTRY_IMAGE/catalog_product:$CI_COMMIT_SHORT_SHA
+    # запускаю docker-compose
+    - docker compose up -d
+    after_script:
+    # удаляю ненужные образы
+    - docker image prune -af

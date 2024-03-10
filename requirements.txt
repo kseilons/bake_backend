@@ -1,0 +1,10 @@
+SQLAlchemy~=2.0.25
+uvicorn[standard]~=0.27.0.post1
+fastapi~=0.109.0
+psycopg2-binary
+alembic~=1.13.1
+pydantic~=2.6.0
+celery~=5.3.6
+requests
+redis
+email-validator
