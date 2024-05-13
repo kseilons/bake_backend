@@ -1,21 +1,47 @@
-from pydantic import BaseModel
+from fastapi import UploadFile, File
+from pydantic import BaseModel, field_validator
 from typing import List, Optional
 
 
 class ProductProp(BaseModel):
-    prop_id: int
-    value: int
+    name: str
+    value: Optional[str]
 
+class Images(BaseModel):
+    image_url: str
+    alt: str
+    class Config:
+        from_attributes = True
+    
+class Files(BaseModel):
+    file: str
 
 class ProductCreate(BaseModel):
-    title: str
+    title: Optional[str] = None
     preview_img: str
-    category_id: int
+    category_id: Optional[int] = None
     short_description: Optional[str] = None
-    description: str
-    property: List[ProductProp]
-    img: List[str]
+    description: Optional[str] = None
+    sort: Optional[int] = 0
+    brand: Optional[str] = None
+    old_price: int = None
+    price: int = None
+    is_hit: bool = False
+    article: str = None
+    properties: List[ProductProp]
+    images: Optional[List[Images]] = None
+    files: Optional[List[str]] = None
+    @field_validator("short_description")
+    def process_short_description(cls, v, values):
+        """
+        Валидатор для автоматического заполнения short_description, если он пустой.
+        """
+        if not v:
+            return values.get("description")[:150]
+        return v
 
+class ProductCreateParser(ProductCreate):
+    category_name: Optional[str]
 
 class ProductUpdate(BaseModel):
     title: Optional[str] = None
@@ -23,35 +49,70 @@ class ProductUpdate(BaseModel):
     category_id: Optional[str] = None
     short_description: Optional[str] = None
     description: Optional[str] = None
-    property: Optional[List[ProductProp]] = None
-    img: Optional[List[str]] = None
+    sort: Optional[int] = None
+    brand: str
+    old_price: int = None
+    price: int = None
+    is_hit: bool = None
+    article: str = None
+    properties: Optional[List[ProductProp]] = None
+    images: Optional[List[Images]] = None
+    files: Optional[List[str]] = None
 
 
 class ProductPreview(BaseModel):
     id: int
-    title: str
-    category_id: int
-    short_description: str
-    rating_avg: int
-    rating_count: int
+    preview_img: Optional[str]
+    title: Optional[str]
+    category_name: Optional[str]
+    short_description: Optional[str]
+    rating_avg: Optional[int]
+    rating_count: Optional[int]
+    brand: Optional[str]
+    old_price: Optional[int]
+    price: Optional[int]
+    is_hit: Optional[bool]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
+    @classmethod
+    def from_product(cls, product):
+        return cls(
+            id=product.id,
+            title=product.title,
+            category_name=product.category.name,
+            short_description=product.short_description,
+            rating_avg=product.rating_avg,
+            rating_count=product.rating_count,
+            brand=product.brand,
+            old_price=product.old_price,
+            price=product.price,
+            is_hit=product.is_hit,
+            preview_img=product.preview_img
+        )
 
 class Product(BaseModel):
     id: int
-    title: str
-    category_name: str
-    description: str
-    property: List[ProductProp]
-    img: List[str]
-    rating_avg: int
-    rating_count: int
+    title: Optional[str] = None
+    category_name: Optional[str] = None
+    description: Optional[str] = None
+    rating_avg: Optional[int] = None
+    rating_count: Optional[int] = None
+    brand: Optional[str] = None
+    old_price: Optional[int] = None
+    price: Optional[int] = None
+    is_hit: Optional[bool] = False
+    article: Optional[str] = None
+    properties: Optional[List[ProductProp]] = None
+    images: Optional[List[Images]] = None
+    files: Optional[List[Files]] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProductList(BaseModel):
-    properties: List[ProductPreview]
+    products: List[ProductPreview]
+    total_pages: int
+    total_count: int

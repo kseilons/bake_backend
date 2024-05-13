@@ -1,6 +1,8 @@
 import uvicorn
 
-from app.routers import users, categories, property_info, change_product
+from app.routers import users, categories, products
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -8,9 +10,13 @@ app = FastAPI()
 app.include_router(users.router)
 app.include_router(categories.router,
                    prefix="/categories")
-app.include_router(property_info.router,
-                   prefix="/property_info")
-app.include_router(change_product.router,
-                   prefix="/schem_product")
-# app.include_router(offers_property.router,
-#                    prefix="/offers-props")
+app.include_router(products.router,
+                   prefix="/products")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Здесь можно указать список разрешенных доменов
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

@@ -43,7 +43,7 @@ async def get_categories(db: Session, parent_id: int, deep_level: int):
     def get_child_categories(parent_id, current_level):
         if current_level >= deep_level:
             return []
-        db_categories = db.query(DBCategory).filter_by(parent_id=parent_id).all()
+        db_categories = db.query(DBCategory).filter_by(parent_id=parent_id).order_by(-DBCategory.sort).all()
         categories = []
         for db_category in db_categories:
             category = schemas.Category.from_orm(db_category)
@@ -55,6 +55,18 @@ async def get_categories(db: Session, parent_id: int, deep_level: int):
         parent_id = None
 
     return schemas.CategoryList(categories=get_child_categories(parent_id, 0))
+
+async def get_category_id(db: Session, category_name: str):
+    """
+    Получает категории из базы данных в соответствии с именем категории.
+    """
+
+    db_category = db.query(DBCategory).filter_by(name=category_name).first()
+
+    if not db_category:
+        raise HTTPException(status_code=404, detail="Категория не найдена")
+
+    return db_category.id
 
 
 async def update_catalog(db: Session, category_id: int, category: schemas.CategoryUpdate):

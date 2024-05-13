@@ -8,7 +8,6 @@ import app.models.products
 import app.models.categories
 import app.models.users
 import app.models.baskets
-import app.models.product_properties
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -5,11 +5,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-#        image: ${CI_REGISTRY_IMAGE}/catalog_product:${CI_COMMIT_SHORT_SHA}
-        container_name: catalog_api
+        container_name: bake_backend
         restart: on-failure
         ports:
-        - "8012:8000"
+        - "8000:8000"
         networks:
         - catalog_network
         environment:
@@ -18,10 +17,8 @@ services:
         - DB_HOST
         - DB_PORT
         - DB_NAME
-        - REDIS_BROKER_URL=redis://redis:6379/0
         depends_on:
         - db
-        - redis
 
     db:
         image: postgres
@@ -35,13 +32,8 @@ services:
         - catalog_network
         ports:
         - 54320:5432
-
-    redis:
-        image: redis
-        container_name: redis
-        restart: always
-        networks:
-            - catalog_network
+        volumes:
+        - ./pgdata:/var/lib/postgresql/data
 
     adminer:
         image: adminer

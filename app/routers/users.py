@@ -8,17 +8,24 @@ from app.schemas import users
 from app.controllers import users as users_controller
 from app.utils import users as users_utils
 from app.utils.dependecies import get_current_user
+from app.utils.email.smtp_server import EmailSender
 
 router = APIRouter(tags=['users'])
 
+email_sender = EmailSender()
 
 @router.post("/sign-up", response_model=users.User)
 async def create_user(user: users.UserCreate, db: Session = Depends(get_db)):
     db_user = await users_controller.get_user_by_email(email=user.email, db=db)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return await users_controller.create_user(user=user, db=db)
 
+    new_user = await users_controller.create_user(user=user, db=db)
+    # Отправка электронного сообщения с подтверждением
+    confirmation_link = f"http://yourapp.com/confirm/{new_user.id}"  # Замените на ссылку подтверждения
+    email_sender.send_email(new_user.email, 'Confirmation Email', f'Please click the following link to confirm your email: {confirmation_link}')
+
+    return new_user
 
 @router.post("/auth", response_model=users.TokenBase)
 async def auth(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):

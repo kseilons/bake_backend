@@ -18,10 +18,10 @@ class Review(ReviewsBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ReviewList(BaseModel):
     reviews: List[Review]
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.schemas.users import User
 from app.utils.dependecies import verify_admin_user
 
-router = APIRouter(tags=['catalogs'])
+router = APIRouter(tags=['categories'])
 
 
 @router.post("/", response_model=schemas.CategoryChangeResponse, status_code=status.HTTP_201_CREATED)
@@ -18,6 +18,9 @@ async def create_catalog(catalog: schemas.CategoryCreate, db: Session = Depends(
     """
     result = await controller.create_category(db, catalog)
     return result
+
+
+
 
 
 @router.get("/", response_model=schemas.CategoryList)

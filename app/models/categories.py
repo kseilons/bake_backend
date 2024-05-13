@@ -13,3 +13,4 @@ class Category(Base):
     sort = Column(Integer, default=0)
     parent = relationship("Category", remote_side=[id], back_populates="children")
     children = relationship("Category", back_populates="parent", overlaps="parent")
+    products = relationship("Product", back_populates="category")
