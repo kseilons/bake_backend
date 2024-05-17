@@ -17,6 +17,10 @@ services:
         - DB_HOST
         - DB_PORT
         - DB_NAME
+        - SMTP_USERNAME
+        - SMPT_PASSWORD
+        - SMTP_SERVER
+        - SMTP_PORT
         depends_on:
         - db
 

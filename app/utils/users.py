@@ -22,7 +22,3 @@ def validate_password(password: str, hashed_password: str):
     salt, hashed = hashed_password.split("$")
     return hash_password(password, salt) == hashed
 
-
-def is_admin(email):
-    admin_email = environ.get("ADMIN_EMAIL", None)
-    return email == admin_email

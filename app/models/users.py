@@ -15,10 +15,11 @@ class Users(Base):
     surname = Column(String, nullable=True)
     patronymic = Column(String, nullable=True)
     hashed_password = Column(String)
-    role = Column(String)
-    is_active = Column(Boolean, server_default="true", nullable=False)
+    role = Column(String, default='user')
     address = relationship("UsersAddress", uselist=False, back_populates="user")
     tokens = relationship("Token", back_populates="user")
+    confirmation_token = Column(String, nullable=True)
+    is_verified = Column(Boolean, default=False)
 
 class UsersAddress(Base):
     __tablename__ = "users_address"
@@ -36,7 +37,7 @@ class Token(Base):
     __tablename__ = "tokens"
 
     id = Column(Integer, primary_key=True, index=True)
-    token = Column(UUID(as_uuid=False), unique=True, nullable=False, index=True)
+    access_token = Column(UUID(as_uuid=False), unique=True, nullable=False, index=True)
     expires = Column(DateTime)
     user_id = Column(Integer, ForeignKey("users.id"))
 

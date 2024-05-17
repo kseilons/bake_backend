@@ -1,9 +1,9 @@
 import logging
 from typing import List
 
-from app.controllers.categories import get_category_id
+from app.crud.categories import get_category_id
 from app.schemas import products as schemas
-from app.controllers import products as controller
+from app.crud import products as controller
 from app.models.database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
 from sqlalchemy.orm import Session

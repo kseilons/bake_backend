@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.schemas import baskets as schemas
-from app.controllers import baskets as controllers
+from app.crud import baskets as controllers
 from app.models.database import get_db
 
 router = APIRouter()

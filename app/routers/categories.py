@@ -1,5 +1,5 @@
 from app.schemas import categories as schemas
-from app.controllers import categories as controller
+from app.crud import categories as controller
 from app.models.database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
