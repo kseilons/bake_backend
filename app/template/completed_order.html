@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали заказа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .user-info {
+            margin-top: 20px;
+        }
+        .user-info p {
+            margin: 5px 0;
+        }
+        .basket {
+            margin-top: 20px;
+        }
+        .basket-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .product-info {
+            margin-left: 20px;
+        }
+        .product-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Детали заказа</h1>
+        </div>
+        <div class="user-info">
+            <h2>Информация о пользователе</h2>
+            <p><strong>Имя:</strong> {{ user_name }} {{ user_surname }} {{ user_patronymic }} </p>
+            <p><strong>Email:</strong> {{ user_email }}</p>
+            <p><strong>Телефон:</strong> {{ user_phone }}</p>
+            {% if shipping_method != "самовывоз" %}
+            <p><strong>Адрес доставки:</strong> {{ region }}, {{ city }}, {{ num_of_house }}, {{ postcode }}</p>
+            {% endif %}
+            <p><strong>Метод доставки:</strong> {{ shipping_method }}</p>
+        </div>
+        <div class="basket">
+            <h2>Товары в заказе</h2>
+            {% for item in basket %}
+            <div class="basket-item">
+                <p><strong>Название товара:</strong> {{ item.product_name }}</p>
+                <p><strong>Артикул товара:</strong> {{ item.product_article }}</p>
+                <p><strong>Бренд:</strong> {{ item.product_brand }}</p>
+                <p><strong>Цена:</strong> {{ item.product_price }}</p>
+                <div class="product-info">
+                    <p><strong>Превью товара:</strong></p>
+                    <img src="{{ item.product_preview_img }}" alt="Превью товара">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

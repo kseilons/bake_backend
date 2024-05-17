@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение заказа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .user-info {
+            margin-top: 20px;
+        }
+        .user-info p {
+            margin: 5px 0;
+        }
+        .basket {
+            margin-top: 20px;
+        }
+        .basket-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .product-info {
+            margin-left: 20px;
+        }
+        .product-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Подтверждение заказа</h1>
+        </div>
+        <div class="user-info">
+            <h2>Информация о заказчике</h2>
+            <p><strong>Имя:</strong> {{ user_name }} {{ user_surname }}</p>
+            <p><strong>Email:</strong> {{ user_email }}</p>
+            <p><strong>Телефон:</strong> {{ user_phone }}</p>
+            <p><strong>Метод доставки:</strong> {{ shipping_method }}</p>
+            {% if region and city and num_of_house and postcode %}
+            <p><strong>Адрес доставки:</strong> {{ region }}, {{ city }}, {{ num_of_house }}, {{ postcode }}</p>
+            {% endif %}
+        </div>
+        <div class="basket">
+            <h2>Состав заказа</h2>
+            {% for item in basket %}
+            <div class="basket-item">
+                <p><strong>Название товара:</strong> {{ item.product_name }}</p>
+                <p><strong>Артикул товара:</strong> {{ item.product_article }}</p>
+                <p><strong>Бренд:</strong> {{ item.product_brand }}</p>
+                <p><strong>Цена:</strong> {{ item.product_price }}</p>
+                <div class="product-info">
+                    <p><strong>Превью товара:</strong></p>
+                    <img src="{{ item.product_preview_img }}" alt="Превью товара">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="contact-info">
+            <h2>Контактная информация менеджера</h2>
+            <p>Для связи с менеджером по вопросам заказа, пожалуйста, используйте следующий номер телефона: <strong>+X XXX XXX XX XX</strong></p>
+        </div>
+    </div>
+</body>
+</html>

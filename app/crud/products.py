@@ -59,8 +59,7 @@ async def create_product(db: Session,
 
 
 async def get_product_by_id(db: Session, product_id: int) -> Optional[model.Product]:
-    product = db.query(model.Product).filter_by(id=product_id).first()
-    return product
+    return db.query(model.Product).filter_by(id=product_id).first()
 
 
 async def update_product(db: Session, db_obj: model.Product, obj_in=schemas.ProductUpdate):

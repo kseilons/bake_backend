@@ -6,7 +6,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 template_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'template'))
 
 def render_template(template_name: str, context: dict) -> str:
-    with open(os.path.join(template_path, template_name), 'r') as file:
+    with open(os.path.join(template_path, template_name), 'r', encoding='utf-8') as file:
         template = Template(file.read())
     return template.render(context)
 

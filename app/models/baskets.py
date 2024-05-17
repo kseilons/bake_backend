@@ -19,5 +19,7 @@ class BasketItem(Base):
     id = Column(Integer, primary_key=True, index=True)
     basket_id = Column(Integer, ForeignKey('basket.id'))
     product_id = Column(Integer, ForeignKey('products.id'))
+    amount = Column(Integer)
 
     basket = relationship("Basket", back_populates="items")
+    product = relationship("Product")

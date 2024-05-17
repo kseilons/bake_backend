@@ -10,11 +10,11 @@ from app.schemas import users as users_schemas
 from app.crud import users as users_crud
 from app.utils import users as users_utils
 from app.utils.dependecies import get_current_user
-from app.utils.email.smtp_server import EmailSender
+from app.utils.email.smtp_server import email_sender
 from app.utils.email.template_renderer import render_template
 from app.setting import confirm_email_url
 
-email_sender = EmailSender()
+
 
 async def create_user(user: users_schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = await users_crud.get_user_by_email(email=user.email, db=db)

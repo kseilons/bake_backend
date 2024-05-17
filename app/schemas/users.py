@@ -33,6 +33,7 @@ class UserUpdate(BaseModel):
     surname: Optional[str] = None
     patronymic: Optional[str] = None
     address: Optional[UserAddress] = None
+    phone: Optional[str] = None
 
 
 
@@ -57,6 +58,10 @@ class User(BaseModel):
     surname: Optional[str] = None
     patronymic: Optional[str] = None
     address: Optional[UserAddress] = None
+    phone: Optional[str] = None
     
     class Config:
         from_attributes = True
+        
+        
+        

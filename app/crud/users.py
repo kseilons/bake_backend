@@ -49,7 +49,7 @@ async def create_user(user: user_schema.UserCreate, db: Session):
 
 
 async def update_user(user_update: user_schema.UserUpdate, db_user: Users, db: Session):
-     # Обновляем свойства пользователя
+    # Обновляем свойства пользователя
     for field, value in user_update.dict().items():
         if field != 'address':
             setattr(db_user, field, value)

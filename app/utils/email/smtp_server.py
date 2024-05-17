@@ -20,3 +20,6 @@ class EmailSender:
             await server.ehlo()
             await server.login(self.smtp_username, self.smtp_password)
             await server.send_message(message)
+            
+            
+email_sender = EmailSender()
