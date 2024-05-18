@@ -6,6 +6,8 @@ from typing import List, Optional
 class ProductProp(BaseModel):
     name: str
     value: Optional[str]
+    class Config:
+        from_attributes = True
 
 class Images(BaseModel):
     image_url: str
@@ -15,6 +17,7 @@ class Images(BaseModel):
     
 class Files(BaseModel):
     file: str
+    
 
 class ProductCreate(BaseModel):
     title: Optional[str] = None
@@ -61,17 +64,17 @@ class ProductUpdate(BaseModel):
 
 
 class ProductPreview(BaseModel):
-    id: int
-    preview_img: Optional[str]
-    title: Optional[str]
-    category_name: Optional[str]
-    short_description: Optional[str]
-    rating_avg: Optional[int]
-    rating_count: Optional[int]
-    brand: Optional[str]
-    old_price: Optional[int]
-    price: Optional[int]
-    is_hit: Optional[bool]
+    id: int = None
+    preview_img: Optional[str] = None
+    title: Optional[str] = None
+    category_name: Optional[str] = None
+    short_description: Optional[str] = None
+    rating_avg: Optional[int] = None
+    rating_count: Optional[int] = None
+    brand: Optional[str] = None
+    old_price: Optional[int] = None
+    price: Optional[int] = None 
+    is_hit: Optional[bool] = None
 
     class Config:
         from_attributes = True
@@ -91,6 +94,7 @@ class ProductPreview(BaseModel):
             is_hit=product.is_hit,
             preview_img=product.preview_img
         )
+
 
 class Product(BaseModel):
     id: int
@@ -114,5 +118,35 @@ class Product(BaseModel):
 
 class ProductList(BaseModel):
     products: List[ProductPreview]
+    total_pages: int
+    total_count: int
+
+
+
+class Category(BaseModel):
+    name: str
+    class Config:
+        from_attributes = True
+        
+class ProductSearch(BaseModel):
+    id: int = None
+    preview_img: Optional[str] = None
+    title: Optional[str] = None
+    category_name: Optional[str] = None
+    rating_avg: Optional[int] = None
+    rating_count: Optional[int] = None
+    brand: Optional[str] = None
+    old_price: Optional[int] = None
+    price: Optional[int] = None 
+    is_hit: Optional[bool] = None
+    article: Optional[str] = None
+    description: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ProductSearchList(BaseModel):
+    products: List[ProductSearch]
     total_pages: int
     total_count: int

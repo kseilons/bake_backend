@@ -60,7 +60,7 @@ async def update_product_details(
 async def delete_product(product_id: int, db: Session = Depends(get_db),
                          current_user: User = Depends(verify_admin_user)):
 
-    return controller.delete_product(db, product_id)
+    return await controller.delete_product(db, product_id)
 
 
 @router.get("/", response_model=schemas.ProductList)
@@ -97,3 +97,15 @@ async def get_products(
 @router.get("/{product_id}", response_model=schemas.Product)
 async def get_product(product_id: int, db: Session = Depends(get_db)):
     return await controller.get_product_by_id(db, product_id)
+
+
+@router.get("/search/", response_model=schemas.ProductSearchList)
+async def search(query: str, db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+    total_pages, total_count, products = await controller.search_products(db, query, limit, offset)
+    if products:
+        return schemas.ProductSearchList(
+            total_pages=total_pages,
+            total_count=total_count,
+            products=products)
+    else:
+        raise HTTPException(status_code=404, detail="No products found")

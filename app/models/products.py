@@ -60,7 +60,7 @@ class ProductInfo(Base):
     id = Column(Integer, primary_key=True, index=True)
     description = Column(Text)
     product_id = Column(Integer, ForeignKey('products.id'))
-    article = Column(Integer)
+    article = Column(String)
     product = relationship("Product", back_populates="info")
 
 class ProductReview(Base):
