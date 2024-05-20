@@ -44,16 +44,12 @@ async def get_user(current_user: users_schemas.User = Depends(get_current_user))
 
 @router.delete("/users/{user_id}")
 async def delete_user(
-        user_id: int,
         current_user: users_schemas.User = Depends(get_current_user),
         db: Session = Depends(get_db)
 ):
-    # Проверяем, является ли текущий пользователь владельцем удаляемого аккаунта
-    if current_user.id != user_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not authorized to delete this account"
-        )
 
-    await users_controller.delete_user(user_id, db)
+    await users_controller.delete_user(current_user.id, db)
     return {"message": "User deleted successfully"}
+
+
+

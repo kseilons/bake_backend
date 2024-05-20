@@ -78,3 +78,9 @@ async def auth(auth_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
 async def update_user(user_update: users_schemas.UserUpdate, user_id: int,  db: Session):
     user = await users_crud.get_user_by_id(user_id, db)
     return await users_crud.update_user(user_update, user, db)
+
+
+async def delete_user(user_id: int, db: Session) -> None:
+
+    return await users_crud.delete_user(user_id, db)
+

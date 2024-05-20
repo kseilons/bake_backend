@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
+from app.models.baskets import Basket
 from app.models.users import Users, Token, UsersAddress
 from app.schemas import users as user_schema
 from app.schemas.users import TokenBase, User
@@ -19,7 +20,8 @@ async def get_user_by_email(email: str, db: Session):
 
 async def get_user_by_token(token: str, db: Session):
     """ Возвращает информацию о владельце указанного токена """
-    return db.query(Token).filter_by(access_token=token).first().user
+    db_token = db.query(Token).filter_by(access_token=token).first()
+    return None if db_token is None else db_token.user
 
 async def get_user_by_id(id: int, db: Session):
     """ Возвращает информацию о владельце указанного id """
@@ -70,10 +72,12 @@ async def update_user(user_update: user_schema.UserUpdate, db_user: Users, db: S
     return db_user
 
 async def delete_user(user_id: int, db: Session) -> None:
+    
     db_user = db.query(Users).filter_by(id=user_id).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
+    db_basket = db.query(Basket).filter_by(user_id=user_id).first()
+    db.delete(db_basket)
     db.delete(db_user)
     db.commit()
     

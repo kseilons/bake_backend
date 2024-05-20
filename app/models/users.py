@@ -17,8 +17,8 @@ class Users(Base):
     patronymic = Column(String, nullable=True)
     hashed_password = Column(String)
     role = Column(String, default='user')
-    address = relationship("UsersAddress", uselist=False, back_populates="user")
-    tokens = relationship("Token", back_populates="user")
+    address = relationship("UsersAddress", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    tokens = relationship("Token", back_populates="user", cascade="all, delete-orphan")
     confirmation_token = Column(String, nullable=True)
     is_verified = Column(Boolean, default=False)
 

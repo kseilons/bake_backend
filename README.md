@@ -21,3 +21,17 @@ http://localhost:8000/docs
 ```bash
 alembic revision --autogenerate -m "Message"
 ```
+
+
+## Работа с бекапом базы данных 
+Команда для создания бекапа:
+```bash
+docker exec -t bake_db_container pg_dump -U bake_user bake_db > backup
+```
+
+Команда для загрузки бекапа:
+```bash
+docker cp backup bake_db_container:/backup
+docker exec -i bake_db_container psql -U bake_user -d bake_db < /backup
+```
+

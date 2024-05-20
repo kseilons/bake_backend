@@ -11,7 +11,7 @@ class Basket(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=True)
     updated_date = Column(DateTime, default=func.now())
 
-    items = relationship("BasketItem", back_populates="basket")
+    items = relationship("BasketItem", back_populates="basket", cascade="all, delete-orphan")
 
 
 class BasketItem(Base):
