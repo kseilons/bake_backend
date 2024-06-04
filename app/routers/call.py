@@ -21,10 +21,11 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/order_call/")
-async def search(phone: str):
+async def search(phone: str, name: str):
 
     context = {
         "user_phone": phone,
+        "name": name
     }
 
     html_content = render_template('order_call.html', context)

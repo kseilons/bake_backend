@@ -96,7 +96,10 @@ async def get_products(
 
 @router.get("/{product_id}", response_model=schemas.Product)
 async def get_product(product_id: int, db: Session = Depends(get_db)):
-    return await controller.get_product_by_id(db, product_id)
+    product = await controller.get_product_by_id(db, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="No products found")
+    return product
 
 
 @router.get("/search/", response_model=schemas.ProductSearchList)

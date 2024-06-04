@@ -74,7 +74,7 @@ async def create_product(db: Session,
 
 
 
-async def get_product_by_id(db: Session, product_id: int) -> Optional[model.Product]:
+async def get_product_by_id(db: Session, product_id: int):
     return db.query(model.Product).filter_by(id=product_id).first()
 
 

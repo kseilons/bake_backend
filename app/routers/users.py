@@ -44,8 +44,8 @@ async def get_user(current_user: users_schemas.User = Depends(get_current_user))
 
 @router.delete("/users/{user_id}")
 async def delete_user(
-        current_user: users_schemas.User = Depends(get_current_user),
-        db: Session = Depends(get_db)
+    current_user: users_schemas.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
 
     await users_controller.delete_user(current_user.id, db)

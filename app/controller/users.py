@@ -31,7 +31,6 @@ async def create_user(user: users_schemas.UserCreate, db: Session = Depends(get_
     await users_crud.save_verification_token(user_id=new_user.id, token=token, db=db)
     
     confirmation_link = confirm_email_url + token
-    print(confirmation_link)
     html_content = render_template('email_confirm.html', {'confirmation_link': confirmation_link})
     # Отправка письма с подтверждением
     await email_sender.send_email(
