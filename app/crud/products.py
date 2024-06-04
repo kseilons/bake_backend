@@ -1,3 +1,4 @@
+import datetime
 import json
 from math import ceil
 from typing import List, Type, Optional
@@ -29,6 +30,7 @@ async def create_product(db: Session,
         old_price=product_data.old_price,
         is_hit=product_data.is_hit,
         brand=product_data.brand,
+        create_date=datetime.datetime.now(),
         rating_count=0,
         rating_avg=0.0
     )
@@ -145,7 +147,8 @@ async def get_products(
             page_limit: int = 10,
             sort_by: str = None,
             sort_order: str = "asc",
-            is_hit: float = None
+            is_hit: bool = None,
+            is_new: bool = None
     ) -> List[schemas.ProductPreview]:
     query = db.query(model.Product)
 
@@ -163,9 +166,10 @@ async def get_products(
 
     #Фильтр по хиту
     if is_hit is not None:
-            is_hit_bool = bool(is_hit)
-            query = query.filter(model.Product.is_hit == is_hit_bool)
-    
+        query = query.filter(model.Product.is_hit == is_hit)
+    if is_new is not None:
+        query = query.filter(model.Product.is_hit == is_hit)
+        
     # Фильтрация по категории
     if categories:
         categories = await get_categories_with_children(db, categories)
@@ -183,6 +187,11 @@ async def get_products(
             query = query.order_by(model.Product.popularity)
         elif sort_order == "desc":
             query = query.order_by(model.Product.popularity.desc())
+    elif sort_by == "date":
+        if sort_order == "asc":
+            query = query.order_by(model.Product.create_date)
+        elif sort_order == "desc":
+            query = query.order_by(model.Product.create_date.desc())
 
 
         

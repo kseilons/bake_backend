@@ -71,9 +71,9 @@ async def get_products(
     categories: List[int] = Query(None, description="Список категорий для фильтрации принимает их id"),
     page: int = Query(1, description="Номер страницы пагинации"),
     page_limit: int = Query(12, description="Лимит страницы"),
-    sort_by: str = Query(None, description="Параметр сортировки (price, popularity)"),
+    sort_by: str = Query(None, description="Параметр сортировки (price, popularity, date)"),
     sort_order: str = Query("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)"),
-    is_hit: float = Query(None, description="Возвращает хит продукты"),
+    is_hit: bool = Query(None, description="Возвращает хит продукты"),
     db: Session = Depends(get_db)
 ):
     total_pages, total_count, products = await controller.get_products(
@@ -86,7 +86,7 @@ async def get_products(
         page_limit=page_limit,
         sort_by=sort_by,
         sort_order=sort_order,
-        is_hit=is_hit
+        is_hit=is_hit,
     )
     products_preview = [schemas.ProductPreview.from_product(product) for product in products]
     return schemas.ProductList(

@@ -48,6 +48,7 @@ async def send_email_for_manager(order_info: basket_schemas.OrderInfo, current_u
         "user_surname": order_info.surname,
         "user_patronymic": order_info.patronymic,
         "region": order_info.user_address.region,
+        "street": order_info.user_address.street,
         "city": order_info.user_address.city,
         "num_of_house": order_info.user_address.num_of_house,
         "postcode": order_info.user_address.postcode,

@@ -1,6 +1,6 @@
 from .database import Base
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, Text, Boolean
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Float, Text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy_file import FileField, ImageField
 
@@ -8,6 +8,7 @@ from sqlalchemy_file import FileField, ImageField
 class Product(Base):
     __tablename__ = "products"
     id = Column(Integer, primary_key=True, index=True)
+    create_date = Column(Date)
     title = Column(String, unique=True)
     preview_img = Column(String)
     rating_avg = Column(Float)  # Пересчитывается при добавлении/редактировании отзыва для продукта
