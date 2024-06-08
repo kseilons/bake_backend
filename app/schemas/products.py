@@ -96,18 +96,21 @@ class ProductPreview(BaseModel):
         )
 
 
+class ProductInfo(BaseModel):
+    description: Optional[str] = None
+    article: Optional[str] = None
+
 class Product(BaseModel):
     id: int
     title: Optional[str] = None
     category_name: Optional[str] = None
-    description: Optional[str] = None
     rating_avg: Optional[int] = None
     rating_count: Optional[int] = None
     brand: Optional[str] = None
     old_price: Optional[int] = None
     price: Optional[int] = None
     is_hit: Optional[bool] = False
-    article: Optional[str] = None
+    info: Optional[List[ProductInfo]] = []
     properties: Optional[List[ProductProp]] = None
     images: Optional[List[Images]] = None
     files: Optional[List[Files]] = None

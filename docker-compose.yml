@@ -1,54 +1,53 @@
 version: "3.9"
 
 services:
-    web:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: bake_backend
-        restart: on-failure
-        ports:
-        - "8000:8000"
-        networks:
-        - catalog_network
-        environment:
-        - DB_USER
-        - DB_PASSWORD
-        - DB_HOST
-        - DB_PORT
-        - DB_NAME
-        - SMTP_USERNAME
-        - SMPT_PASSWORD
-        - SMTP_SERVER
-        - SMTP_PORT
-        depends_on:
-        - db
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bake_backend
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    networks:
+      - catalog_network
+    environment:
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+      - SMTP_USERNAME
+      - SMPT_PASSWORD
+      - SMTP_SERVER
+      - SMTP_PORT
+      - CONFIRM_EMAIL_URL
+    depends_on:
+      - db
 
-    db:
-        image: postgres
-        container_name: $DB_HOST
-        restart: always
-        environment:
-        - POSTGRES_DB=$DB_NAME
-        - POSTGRES_USER=$DB_USER
-        - POSTGRES_PASSWORD=$DB_PASSWORD
-        networks:
-        - catalog_network
-        ports:
-        - 54320:5432
-        volumes:
-        - ./pgdata:/var/lib/postgresql/data
+  db:
+    image: postgres
+    container_name: $DB_HOST
+    restart: always
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    networks:
+      - catalog_network
+    ports:
+      - 54320:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
 
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-        - 8080:8080
-        networks:
-        - catalog_network
-
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - catalog_network
 
 networks:
-    catalog_network:
-        driver: bridge
-
+  catalog_network:
+    driver: bridge
