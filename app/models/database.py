@@ -1,8 +1,8 @@
 from os import environ
 
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase
 
 DB_USER = environ.get("DB_USER", "postgres")
 DB_PASSWORD = environ.get("DB_PASSWORD", "admin")
@@ -18,7 +18,11 @@ engine = create_engine(
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 metadata = MetaData()
-Base = declarative_base(metadata=metadata)
+class Base(DeclarativeBase):
+    metadata = metadata
+    
+
+
 
 def get_db():
     db = SessionLocal()

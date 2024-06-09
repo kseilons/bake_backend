@@ -11,7 +11,7 @@ from fastapi import HTTPException, status
 from app.utils.categories import get_level_nesting
 
 
-async def create_category(db: Session, catalog: schemas.CategoryCreate):
+async def create_category(db: Session, catalog: schemas.ICategoryCreate):
     parent_id = catalog.parent_id
     if parent_id == 0:
         parent_id = None  # Корневая категория
@@ -69,7 +69,7 @@ async def get_category_id(db: Session, category_name: str):
     return db_category.id
 
 
-async def update_catalog(db: Session, category_id: int, category: schemas.CategoryUpdate):
+async def update_catalog(db: Session, category_id: int, category: schemas.ICategoryUpdate):
     """
     Обновляет значения указанной категории в базе данных.
     """

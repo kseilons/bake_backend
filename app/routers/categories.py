@@ -11,7 +11,7 @@ router = APIRouter(tags=['categories'])
 
 
 @router.post("/", response_model=schemas.CategoryChangeResponse, status_code=status.HTTP_201_CREATED)
-async def create_catalog(catalog: schemas.CategoryCreate, db: Session = Depends(get_db),
+async def create_catalog(catalog: schemas.ICategoryCreate, db: Session = Depends(get_db),
                          current_user: User = Depends(verify_admin_user)):
     """
         Этот метод создает сущность категории. В sort чем больше значение, тем выше приоритет у каталога
@@ -39,7 +39,7 @@ async def get_categories(parent_id: int = 0,
 
 @router.put("/{category_id}", response_model=schemas.CategoryChangeResponse)
 async def update_category(
-        category_id: int, category: schemas.CategoryUpdate,
+        category_id: int, category: schemas.ICategoryUpdate,
         db: Session = Depends(get_db),
         current_user: User = Depends(verify_admin_user)
 ):

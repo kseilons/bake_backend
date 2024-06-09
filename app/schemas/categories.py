@@ -2,12 +2,12 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class CategoryCreate(BaseModel):
+class ICategoryCreate(BaseModel):
     name: str
     parent_id: Optional[int] = 0
     sort: Optional[int] = 0
 
-class CategoryUpdate(BaseModel):
+class ICategoryUpdate(BaseModel):
     name: Optional[str] = None
     parent_id: Optional[int] = None
 
