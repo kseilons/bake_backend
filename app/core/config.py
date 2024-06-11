@@ -43,12 +43,20 @@ class AuthSettings(BaseSettings):
     VERIFY_PATH: str = Field("/confirm/")
     FORGOT_PASSWORD_PATH: str = Field("/reset-pasword/")
     
+class TemplateName(BaseSettings):
+    EMAIL_CONFIRM = Field("email_confirm.html")
+    FORGOT_PASSWORD = Field("forgot_password.html")
+    ORDER_CALL = Field("order_call.html")
+    ORDER_FOR_USER = Field("order_for_user.html")
+    ORDER_FOR_MANAGER = Field("order_for_manager.html")
+    
 class Settings(BaseSettings):
     database: DatabaseSettings = DatabaseSettings()
     email: EmailSettings = EmailSettings()
     auth: AuthSettings = AuthSettings()
-    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+    template: TemplateName = TemplateName()
     FRONTEND_URL: str = Field("http://localhost:80/")
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 
 
 settings = Settings()

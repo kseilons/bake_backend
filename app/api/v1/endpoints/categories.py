@@ -1,5 +1,6 @@
 
-from app.categories.schemas import ICategoryCreate, ICategoryResponse
+from app.categories.deps import category_exists, is_valid_category_id
+from app.categories.schemas import ICategoryCreate, ICategoryResponse, ICategoryUpdate, ICategoryWithChildrenResponse
 from fastapi import APIRouter, Depends, status
 
 from app.categories.crud import crud_category
@@ -10,7 +11,7 @@ router = APIRouter(tags=['categories'])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_catalog(catalog: ICategoryCreate,
+async def create_catalog(catalog: ICategoryCreate = Depends(category_exists),
                         user: User = Depends(current_superuser),
                         ) -> ICategoryResponse:
     """
@@ -19,56 +20,36 @@ async def create_catalog(catalog: ICategoryCreate,
     return await service.create(catalog=catalog)
 
 
-@router.get("/", response_model=list[ICategoryResponse])
+@router.get("/")
 async def get_categories(parent_id: int = 0,
-                        deep_level: int = 2):
+                        deep_level: int = 2
+                        ) -> list[ICategoryWithChildrenResponse]:
     """
     Возвращает каталоги из базы данных.
     Если parent_id = 0, возвращает корневые каталоги.
     Параметр deep_level определяет количество уровней вложенности.
     """
-    
-    result = await crud_category.get_multi()
+    return await service.get_with_child(parent_id, deep_level)
 
-    return result
-
-
-
-
-
-# @router.put("/{category_id}", response_model=schemas.CategoryChangeResponse)
-# async def update_category(
-#         category_id: int, category: schemas.ICategoryUpdate,
-#         db: Session = Depends(get_db),
-#         current_user: User = Depends(verify_admin_user)
-# ):
-#     """
-#         Обновляет значения указанные в теле запроса.
-#     """
-#     return await controller.update_catalog(db, category_id=category_id, category=category)
+@router.put("/{category_id}")
+async def update_category(
+        category: ICategoryUpdate,
+        category_new: int = Depends(is_valid_category_id),
+        user: User = Depends(current_superuser)
+):
+    """
+        Обновляет значения указанные в теле запроса.
+    """
+    return await service.update(category, category_new)
 
 
-# @router.put("/{category_id}/change_sort_order", response_model=schemas.CategoryChangeResponse, status_code=status.HTTP_200_OK)
-# async def change_category_sort_order(
-#         category_id: int,
-#         sort_order: int,
-#         db: Session = Depends(get_db),
-#         current_user: User = Depends(verify_admin_user)
-# ):
-#     """
-#     Изменяет порядок сортировки категории по её идентификатору.
-#     """
-#     category = await controller.update_category_sort_order(db, category_id, sort_order)
-#     return category
 
-
-# @router.delete("/{category_id}", status_code=status.HTTP_200_OK)
-# async def delete_catalog(
-#         category_id: int,
-#         db: Session = Depends(get_db),
-#         current_user: User = Depends(verify_admin_user)
-# ):
-#     """
-#         Удаляет каталог, если нет связанных продуктов
-#     """
-#     return await controller.delete_catalog(db, category_id=category_id)
+@router.delete("/{category_id}")
+async def delete_catalog(
+        category_id: int = Depends(is_valid_category_id),
+        current_user: User = Depends(current_superuser)
+) -> ICategoryWithChildrenResponse:
+    """
+        Удаляет каталог.
+    """
+    return await crud_category.remove(id=category_id)

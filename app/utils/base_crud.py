@@ -182,7 +182,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self, *, id: UUID | str
     ) -> ModelType:
         async with async_session_maker() as db_session:
-            response = await db_session.exec(
+            response = await db_session.execute(
                 select(self.model).where(self.model.id == id)
             )
             obj = response.scalar_one()

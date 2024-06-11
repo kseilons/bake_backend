@@ -11,7 +11,7 @@ ModelType = TypeVar("ModelType", bound=DeclarativeBase)
 async def get_level_nesting(parent_id: int):
     if parent_id == 0:
         return 1  # Корневая категория
-    parent_catalog = crud_category.get(id=parent_id)
+    parent_catalog = await crud_category.get(id=parent_id)
     if parent_catalog is not None:
         return parent_catalog.level_nesting + 1
     else:
