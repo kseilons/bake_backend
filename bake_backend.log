@@ -1,5 +1,0 @@
-2024-06-11 16:08:09,595 : root : DEBUG : (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.NotNullViolationError'>: null value in column "parent_id" of relation "category" violates not-null constraint
-DETAIL:  Failing row contains (11, string, 1, null, 0).
-[SQL: INSERT INTO category (name, level_nesting, parent_id, sort) VALUES ($1::VARCHAR, $2::INTEGER, $3::INTEGER, $4::INTEGER) RETURNING category.id]
-[parameters: ('string', 1, None, 0)]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
