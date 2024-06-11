@@ -1,75 +1,78 @@
-from .database import Base
+import datetime
+from typing import List
+
+from ..db.session import Base
 
 from sqlalchemy import Column, Date, ForeignKey, Integer, String, Float, Text, Boolean
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy_file import FileField, ImageField
 
 
 class Product(Base):
-    __tablename__ = "products"
-    id = Column(Integer, primary_key=True, index=True)
-    create_date = Column(Date)
-    title = Column(String, unique=True)
-    preview_img = Column(String)
-    rating_avg = Column(Float)  # Пересчитывается при добавлении/редактировании отзыва для продукта
-    rating_count = Column(Integer)
-    category_id = Column(Integer, ForeignKey('category.id'))
-    short_description = Column(String)
-    sort = Column(Integer)
-    price = Column(Integer)
-    old_price = Column(Integer)
-    is_hit = Column(Boolean)
-    brand = Column(String)
-    category = relationship("Category", back_populates="products")
-    info = relationship("ProductInfo", back_populates="product", cascade="all, delete")
-    properties = relationship("ProductProperty", back_populates="product", cascade="all, delete")
-    images = relationship("ProductImage", back_populates="product", cascade="all, delete")
-    files = relationship("ProductFile", back_populates="product", cascade="all, delete")
-    reviews = relationship("ProductReview", back_populates="product")
+    __tablename__ = "product"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    create_date: Mapped[datetime.datetime] = mapped_column(default=datetime.UTC)
+    title: Mapped[str] = mapped_column(unique=True)
+    preview_img: Mapped[str]
+    # rating_avg: Mapped[float]
+    # rating_count: Mapped[int]
+    category_id: Mapped[int] = mapped_column(ForeignKey('category.id'))
+    # short_description: Mapped[str] 
+    sort: Mapped[int]
+    price: Mapped[int]
+    old_price: Mapped[int]
+    is_hit: Mapped[bool]
+    brand: Mapped[str]
+    category: Mapped["Category"] = relationship( back_populates="products")
+    info: Mapped["ProductInfo"] = relationship(back_populates="product", cascade="all, delete")
+    properties: Mapped[List["ProductProperty"]] = relationship(back_populates="product", uselist=False, cascade="all, delete")
+    images: Mapped[List["ProductImage"]] = relationship(back_populates="product", cascade="all, delete")
+    files: Mapped[List["ProductFile"]] = relationship( back_populates="product", cascade="all, delete")
+    # reviews: Mapped[List["ProductReview"]] = relationship(ack_populates="product", cascade="all, delete")
+
 
 class ProductImage(Base):
-    __tablename__ = "product_images"
-    id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, ForeignKey('products.id'))
-    image_url = Column(String)
-    alt = Column(String)
-
-    product = relationship("Product", back_populates="images")
+    __tablename__ = "product_image"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+    image_url: Mapped[str] = mapped_column(String)
+    alt: Mapped[str] = mapped_column(String)
+    product: Mapped["Product"] = relationship(back_populates="images")
 
 
 class ProductProperty(Base):
     __tablename__ = "product_property"
-    id = Column(Integer, primary_key=True, index=True)
-    prod_id = Column(Integer, ForeignKey('products.id'))
-    value = Column(String)
-    name = Column(String)
-
-    product = relationship("Product", back_populates="properties")
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    prod_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+    value: Mapped[str]
+    name: Mapped[str]
+    product: Mapped["Product"] = relationship(back_populates="properties")
 
 
 class ProductFile(Base):
     __tablename__ = "product_files"
-    id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, ForeignKey('products.id'))
-    file = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+    file: Mapped[str]
 
-    product = relationship("Product", back_populates="files")
+    product: Mapped["Product"] = relationship(back_populates="files")
 
 
 class ProductInfo(Base):
     __tablename__ = "product_info"
-    id = Column(Integer, primary_key=True, index=True)
-    description = Column(Text)
-    product_id = Column(Integer, ForeignKey('products.id'))
-    article = Column(String)
-    product = relationship("Product", back_populates="info")
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    description: Mapped[str]
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+    article: Mapped[str]
 
-class ProductReview(Base):
-    __tablename__ = "product_reviews"
-    id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, ForeignKey('products.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
-    text = Column(Text)
-    rating = Column(Integer)
+    product: Mapped["Product"] = relationship(back_populates="info")
 
-    product = relationship("Product", back_populates="reviews")
+# class ProductReview(Base):
+#     __tablename__ = "product_reviews"
+#     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+#     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
+#     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+#     text: Mapped[str]
+#     rating: Mapped[int]
+
+#     product: Mapped["Product"] = relationship(back_populates="reviews")

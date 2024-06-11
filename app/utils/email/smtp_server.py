@@ -1,14 +1,14 @@
 import aiosmtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from app.setting import smtp_password, smtp_username, smtp_server, smtp_port
+from app.core.config import settings
 
 class EmailSender:
     def __init__(self):
-        self.smtp_server = smtp_server
-        self.smtp_port = smtp_port
-        self.smtp_username = smtp_username
-        self.smtp_password = smtp_password
+        self.smtp_server = settings.email.SMTP_SERVER
+        self.smtp_port = settings.email.SMTP_PORT
+        self.smtp_username = settings.email.SMTP_USERNAME
+        self.smtp_password = settings.email.SMTP_PASSWORD
 
     async def send_email(self, email_to: str, subject: str, body: str):
         message = MIMEMultipart()

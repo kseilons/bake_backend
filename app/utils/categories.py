@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from starlette import status
 
-from app.models.categories import Category as DBCategory
+from app.categories.models import Category as DBCategory
 from fastapi import HTTPException
 
 

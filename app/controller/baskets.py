@@ -3,7 +3,7 @@
 from fastapi import HTTPException
 from requests import Session
 from app.schemas import baskets as basket_schemas
-from app.schemas import users as users_schemas
+from app.auth import schemas as users_schemas
 from app.crud import baskets as crud_baskets
 from app.models.baskets import Basket 
 from app.utils.email.smtp_server import email_sender

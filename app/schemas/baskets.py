@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
-from app.schemas.users import UserAddress
+from app.auth.schemas import UserAddress
 
 
 class BasketItem(BaseModel):

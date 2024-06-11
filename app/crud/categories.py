@@ -4,8 +4,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from app.models.categories import Category as DBCategory
-from app.schemas import categories as schemas
+from app.categories.models import Category as DBCategory
+from app.categories import schemas as schemas
 from fastapi import HTTPException, status
 
 from app.utils.categories import get_level_nesting

@@ -1,25 +1,31 @@
-from sqlalchemy import Integer, String, Column, ForeignKey, DateTime
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
+from typing import List
+import uuid
+import datetime
 
-from .database import Base
+from sqlalchemy import UUID, Integer, String, Column, ForeignKey, DateTime
+from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+
+from ..db.session import Base
 
 
 class Basket(Base):
     __tablename__ = "basket"
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=True)
-    updated_date = Column(DateTime, default=func.now())
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("user.id"))
+    updated_date: Mapped[datetime.datetime] = mapped_column(default=datetime.UTC)
 
-    items = relationship("BasketItem", back_populates="basket", cascade="all, delete-orphan")
+    items: Mapped[List["BasketItem"]] = relationship(
+        back_populates="basket", cascade="all, delete-orphan"
+    )
 
 
 class BasketItem(Base):
-    __tablename__ = "basket_items"
-    id = Column(Integer, primary_key=True, index=True)
-    basket_id = Column(Integer, ForeignKey('basket.id'))
-    product_id = Column(Integer, ForeignKey('products.id'))
-    amount = Column(Integer)
+    __tablename__ = "basket_item"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    basket_id: Mapped[int] = mapped_column(ForeignKey("basket.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
+    amount: Mapped[int] = mapped_column()
 
-    basket = relationship("Basket", back_populates="items")
-    product = relationship("Product")
+    basket: Mapped["Basket"] = relationship(back_populates="items")
+    product:  Mapped["Product"] = relationship()

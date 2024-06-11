@@ -1,5 +1,5 @@
 
-from app.models.categories import Category
+from app.categories.models import Category
 from app.models.product_properties import PropertyInfo, ChangeProduct
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session

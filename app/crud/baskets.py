@@ -1,7 +1,7 @@
 from requests import Session
 from sqlalchemy import func
 
-from app.models.users import Users
+from app.auth.models import Users
 from app.schemas import baskets as basket_schemas
 from app.models.baskets import Basket, BasketItem
 

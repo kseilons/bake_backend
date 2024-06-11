@@ -38,7 +38,7 @@ services:
     ports:
       - 54320:5432
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
   adminer:
     image: adminer
@@ -51,3 +51,8 @@ services:
 networks:
   catalog_network:
     driver: bridge
+
+
+volumes:
+  pgdata:
+    driver: local

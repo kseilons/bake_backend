@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import joinedload
 
 from app.models import products as model
-from app.models.categories import Category 
+from app.categories.models import Category 
 
 from app.schemas import products as schemas
 from fastapi import HTTPException, status
