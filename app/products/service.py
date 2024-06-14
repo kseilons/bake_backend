@@ -1,5 +1,8 @@
 
+from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 from app.categories.deps import is_valid_category_id
+from app.products.utils import apply_product_filter
 from .crud import crud_product
 from .models import Product
 from .schemas import IProductCreate, IProductFilterParams, IProductUpdate, IProduct
@@ -26,13 +29,22 @@ async def delete(catalog_id: int):
 
 
 
-async def get_multi_filtered(params: IProductFilterParams):
+async def get_multi_filtered(params: IProductFilterParams,):
     query = (
         select(
             Product,
         )
-        .join(UserFollow, User.id == UserFollow.user_id)
-        .where(UserFollow.target_user_id == current_user.id)
+        .options(joinedload(Product.properties),\
+                        joinedload(Product.images),\
+                        joinedload(Product.files),\
+                        joinedload(Product.category))
     )
-    return await crud_product.get_multi_paginated(params=params, query=query)
-
+    query = await apply_product_filter(query, params)
+    skip = (params.page - 1) * params.page_limit
+    result = await crud_product.get_multi_ordered(query=query, 
+                                                    skip= skip,
+                                                    limit=params.page_limit,
+                                                    order=params.sort_order, 
+                                                    order_by=params.sort_by)
+    products = [IProduct.from_orm(product) for product in result['data']]
+    return {"products": products, "total_pages": result['total_pages'], "total_count": result['total_count']}

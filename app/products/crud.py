@@ -92,7 +92,6 @@ class CRUDProduct(CRUDBase[Product, IProductCreate, IProductUpdate]):
                     detail="Resource already exists",
                 ) from e
 
-
     async def update(
         self,
         *,

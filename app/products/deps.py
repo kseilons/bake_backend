@@ -42,6 +42,11 @@ async def product_valid(new_category: IProductCreate) -> IProductCreate:
 
 async def product_valid_by_parser(new_product: IProductCreateByParser) -> IProductCreate:
     category = await crud_category.get_by_name(name=new_product.category_name)
+    if category is None:   
+        raise HTTPException(
+            status_code=555,
+            detail="Category not found",
+        )
     new_product.category_id = category.id
     product_data = new_product.model_dump(exclude={"category_name"})
     return await product_valid(IProductCreate(**product_data))

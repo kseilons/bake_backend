@@ -1,7 +1,6 @@
 import logging
 from typing import List
 
-from app.crud.categories import get_category_id
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
 from sqlalchemy.orm import Session
 

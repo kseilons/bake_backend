@@ -1,4 +1,5 @@
 from logging import getLogger
+from math import ceil
 from fastapi import Depends, HTTPException
 from typing import Any, Generic, TypeVar
 from uuid import UUID
@@ -104,6 +105,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def get_multi_ordered(
         self,
         *,
+        query: T | Select[T] | None = None,
         skip: int = 0,
         limit: int = 100,
         order_by: str | None = None,
@@ -115,23 +117,34 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             if order_by is None or order_by not in columns:
                 order_by = "id"
 
+            if query is None:
+                query = select(self.model)
+                
+            total_count_query = select(func.count()).select_from(query.subquery())
+            total_count_response = await db_session.execute(total_count_query)
+            total_count = total_count_response.scalar_one()
+            total_pages = ceil(total_count / limit)
             if order == IOrderEnum.asc:
                 query = (
-                    select(self.model)
+                    query
                     .offset(skip)
                     .limit(limit)
                     .order_by(columns[order_by].asc())
                 )
             else:
                 query = (
-                    select(self.model)
+                    query
                     .offset(skip)
                     .limit(limit)
                     .order_by(columns[order_by].desc())
                 )
 
             response = await db_session.execute(query)
-            return response.scalars().all()
+            return {
+                    "data": response.scalars().unique().all(), 
+                    "total_pages": total_pages,
+                    "total_count": total_count
+                    }
 
     async def create(
         self,
