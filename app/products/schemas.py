@@ -133,9 +133,8 @@ class IProductSeacrhList(PaginationList):
 class IProductFilterParams(BaseModel):
     min_price: Optional[float] = Field(None, description="Минимальная цена для фильтрации")
     max_price: Optional[float] = Field(None, description="Максимальная цена для фильтрации")
-    brands: Optional[List[str]] = Query(None, description="Список брендов для фильтрации"),
-
-    categories: Optional[List[int]] = Field(None, description="Список категорий для фильтрации принимает их id")
+    brands: List[str] = Field(None, description="Список брендов для фильтрации")
+    categories: List[int] = Field(None, description="Список категорий для фильтрации принимает их id")
     page: int = Field(1, description="Номер страницы пагинации")
     page_limit: int = Field(12, description="Лимит страницы")
     sort_by: Optional[str] = Field(None, description="Параметр сортировки (price, popularity, date)")

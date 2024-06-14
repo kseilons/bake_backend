@@ -10,6 +10,7 @@ from app.auth.auth import current_active_user, current_superuser
 from app.products.deps import is_valid_product, is_valid_product_id, product_valid, product_valid_by_parser
 from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPreview, IProductUpdate
 from app.products import service
+from app.products.utils import get_product_filter_params
 
 router = APIRouter(tags=['products'])
 
@@ -59,7 +60,7 @@ async def delete_product(product_id: int = Depends(is_valid_product_id),
 
 @router.get("/")
 async def get_products(
-    params: IProductFilterParams = Depends()
+    params: IProductFilterParams = Depends(get_product_filter_params)
 ) -> IProductList:
     return await service.get_multi_filtered(params)
 
