@@ -1,12 +1,12 @@
 
-from app.categories.deps import category_exists, is_valid_category_id
+from app.categories.deps import category_exists, is_valid_category, is_valid_category_id
 from app.categories.schemas import ICategoryCreate, ICategoryResponse, ICategoryUpdate, ICategoryWithChildrenResponse
 from fastapi import APIRouter, Depends, status
 
 from app.categories.crud import crud_category
 from app.categories import service
 from app.auth.models import User
-from app.auth.auth import current_active_user, current_superuser
+from app.auth.auth import current_superuser
 router = APIRouter(tags=['categories'])
 
 
@@ -33,8 +33,8 @@ async def get_categories(parent_id: int = 0,
 
 @router.put("/{category_id}")
 async def update_category(
-        category: ICategoryUpdate,
-        category_new: int = Depends(is_valid_category_id),
+        category_new: ICategoryUpdate,
+        category: int = Depends(is_valid_category),
         user: User = Depends(current_superuser)
 ):
     """

@@ -34,10 +34,13 @@ async def update(
     category: Category,
     category_new: ICategoryUpdate
 ):
-
-    if category_new.parent_id and category_new.parent_id != category.id:
-        category_new.level_nesting = await get_level_nesting(category_new.parent_id)
-        
+    if category_new.parent_id == 0:
+        category_new.parent_id = None
+    if category_new.parent_id:
+        if category_new.parent_id != category.parent_id:
+            category_new.level_nesting = await get_level_nesting(category_new.parent_id)
+        else:
+            category_new.level_nesting = category.level_nesting
     return await crud_category.update(obj_current=category, obj_new=category_new)
 
 

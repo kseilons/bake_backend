@@ -1,7 +1,6 @@
 from sqlalchemy import  String, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from app.models.products import Product
 
 from ..db.session import Base
 
@@ -23,10 +22,5 @@ class Category(Base):
         "Category", 
         back_populates="parent", 
         overlaps="parent",
-        cascade="all, delete-orphan"
-    )
-    products: Mapped[list["Product"]] = relationship(
-        "Product", 
-        back_populates="category",
         cascade="all, delete-orphan"
     )

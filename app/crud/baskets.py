@@ -3,7 +3,7 @@ from sqlalchemy import func
 
 from app.auth.models import Users
 from app.schemas import baskets as basket_schemas
-from app.models.baskets import Basket, BasketItem
+from app.baskets.models import Basket, BasketItem
 
 
 

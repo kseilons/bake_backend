@@ -9,7 +9,7 @@ from app.auth.auth import fastapi_users
 
 from app.auth.schemas import IUser, IUserUpdate
 
-router = APIRouter(tags=['users'], prefix='/users')
+router = APIRouter(tags=['users'])
 
 router.include_router(
     fastapi_users.get_users_router(IUser, IUserUpdate)

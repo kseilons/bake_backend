@@ -5,9 +5,10 @@ from sqlalchemy import pool
 from alembic import context
 from sqlalchemy import engine_from_config
 from app.auth import models
+from app.baskets import models
 from app.categories import models
 from app.db.session import metadata
-from app.models import baskets, products
+from app.products import models
 from app.core.config import settings
 
 # this is the Alembic Config object, which provides

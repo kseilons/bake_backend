@@ -20,7 +20,7 @@ async def is_valid_category_id(
 async def is_valid_category(
     category_id: Annotated[int, Path(title="The UUID id of the user")]
 ) -> Category:
-    category = await crud_category.user.get(id=category_id)
+    category = await crud_category.get(id=category_id)
     if not category:
         raise IdNotFoundException(Category, id=category_id)
 
@@ -28,10 +28,21 @@ async def is_valid_category(
 
 
 async def category_exists(new_category: ICategoryCreate) -> ICategoryCreate:
-    user = await crud_category.get_by_name(name=new_category.name)
-    if user:
+    category = await crud_category.get_by_name(name=new_category.name)
+    if category:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="There is already a catalog with same name",
         )
     return new_category
+
+
+
+async def category_by_name(category_name: str) -> int:
+    category = await crud_category.get_by_name(name=category_name)
+    if category:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="There is already a catalog with same name",
+        )
+    return category.id

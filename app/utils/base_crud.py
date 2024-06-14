@@ -139,9 +139,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_in: CreateSchemaType | ModelType
     ) -> ModelType:
         async with async_session_maker() as db_session:
-            db_session = db_session or self.db.session
+            logger.debug(obj_in)
             db_obj = self.model(**obj_in.model_dump())
-
+            logger.debug(db_obj)
 
             try:
                 db_session.add(db_obj)
@@ -188,4 +188,4 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             obj = response.scalar_one()
             await db_session.delete(obj)
             await db_session.commit()
-            return obj
+            logger.debug("after commit remove")

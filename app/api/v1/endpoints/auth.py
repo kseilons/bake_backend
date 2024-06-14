@@ -6,7 +6,7 @@ from app.utils.email.smtp_server import EmailSender
 from app.auth.auth import auth_backend
 from app.auth.auth import fastapi_users
 
-router = APIRouter(tags=['auth'], prefix='/auth')
+router = APIRouter(tags=['auth'])
 
 email_sender = EmailSender()
 

@@ -44,11 +44,11 @@ class AuthSettings(BaseSettings):
     FORGOT_PASSWORD_PATH: str = Field("/reset-pasword/")
     
 class TemplateName(BaseSettings):
-    EMAIL_CONFIRM = Field("email_confirm.html")
-    FORGOT_PASSWORD = Field("forgot_password.html")
-    ORDER_CALL = Field("order_call.html")
-    ORDER_FOR_USER = Field("order_for_user.html")
-    ORDER_FOR_MANAGER = Field("order_for_manager.html")
+    EMAIL_CONFIRM: str = Field("email_confirm.html")
+    FORGOT_PASSWORD: str = Field("forgot_password.html")
+    ORDER_CALL: str = Field("order_call.html")
+    ORDER_FOR_USER: str = Field("order_for_user.html")
+    ORDER_FOR_MANAGER: str = Field("order_for_manager.html")
     
 class Settings(BaseSettings):
     database: DatabaseSettings = DatabaseSettings()

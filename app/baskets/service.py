@@ -5,7 +5,7 @@ from requests import Session
 from app.schemas import baskets as basket_schemas
 from app.auth import schemas as users_schemas
 from app.crud import baskets as crud_baskets
-from app.models.baskets import Basket 
+from app.baskets.models import Basket 
 from app.utils.email.smtp_server import email_sender
 from app.setting import manager_email
 from app.utils.email.template_renderer import render_template
