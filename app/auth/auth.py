@@ -8,7 +8,7 @@ from app.auth.models import User
 
 from fastapi_users import FastAPIUsers
 
-cookie_transport = CookieTransport(cookie_name="lomo_bake_cookie", cookie_max_age=3600)
+cookie_transport = CookieTransport(cookie_name="lomo_bake_cookie", cookie_max_age=3600 * 14 * 24)
 
 SECRET = settings.auth.SECRET
 
