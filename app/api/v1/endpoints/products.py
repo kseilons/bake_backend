@@ -10,7 +10,7 @@ from app.products.deps import is_valid_product, is_valid_product_id, product_val
 from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPreview, IProductUpdate
 from app.products import service
 from app.products.utils import get_product_filter_params
-
+from app.products.crud import crud_product
 router = APIRouter(tags=['products'])
 
 
@@ -62,6 +62,12 @@ async def get_products(
     params: IProductFilterParams = Depends(get_product_filter_params)
 ) -> IProductList:
     return await service.get_multi_filtered(params)
+
+@router.get("/test")
+async def get_products(
+    
+) -> IProduct:
+    return await crud_product.get_test(id=6)
 
 @router.get("/{product_id}")
 async def get_product(product_id: int = Depends(is_valid_product_id)) -> IProduct:

@@ -39,6 +39,7 @@ class IProductCreate(BaseModel):
 
 class IProductCreateByParser(IProductCreate):
     category_name: Optional[str] = Field(None, description="Указывается либо category_id, либо category_name")
+    category_name_base: Optional[str] = Field(None)
 
 class IProductUpdate(BaseModel):
     title: Optional[str] = None

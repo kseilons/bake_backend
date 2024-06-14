@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from app.db.session import async_session_maker
-from sqlalchemy import insert, select, Select, exc, func, select
+from sqlalchemy import select,  exc, select
 
 logger = getLogger()
 
@@ -34,6 +34,19 @@ class CRUDProduct(CRUDBase[Product, IProductCreate, IProductUpdate]):
                 .where(self.model.id==id)
             response = await db_session.execute(query)
             return response.scalars().first()
+        
+    async def get_test(self, *, id: int) -> Product | None:
+        logger.debug(f"Get product with id = {id}")
+        async with async_session_maker() as db_session:
+            query = select(Product)\
+                .options(joinedload(Product.properties),\
+                        joinedload(Product.images),\
+                        joinedload(Product.files),\
+                        joinedload(Product.category))\
+                .where(self.model.id==id)
+            response = await db_session.execute(query)
+            return response.scalars().first()
+        
         
     async def create(
         self,

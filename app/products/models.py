@@ -18,7 +18,7 @@ class Product(Base):
     preview_img: Mapped[str]
     # rating_avg: Mapped[float]
     # rating_count: Mapped[int]
-    category_id: Mapped[int] = mapped_column(ForeignKey('category.id'))
+    category_id: Mapped[int] = mapped_column(ForeignKey('category.id', ondelete='CASCADE'))
     sort: Mapped[int]
     price: Mapped[int]
     old_price: Mapped[int]

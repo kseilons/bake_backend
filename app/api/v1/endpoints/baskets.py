@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.schemas import baskets as basket_schemas
+from app.baskets import baskets as basket_schemas
 from app.auth import schemas as users_schemas
 from app.controller import baskets as basket_controller
 from app.auth.auth import current_active_user
