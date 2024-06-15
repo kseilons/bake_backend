@@ -1,28 +1,29 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Union
 
-from app.baskets import baskets as basket_schemas
-from app.auth import schemas as users_schemas
-from app.controller import baskets as basket_controller
+from app.baskets.models import Basket
+from app.baskets.schemas import IBasket, IBasketItem, IBasketItemChange, IOrderInfo
+from app.baskets import service
+from app.auth.models import User
 from app.auth.auth import current_active_user
 router = APIRouter(tags=['basket'])
 
 
-@router.get("/", response_model=basket_schemas.Basket)
-async def get_basket(current_user: users_schemas.User = Depends(current_active_user)):
-    return await basket_controller.get_basket(current_user.id, db)
+@router.get("/")
+async def get_basket(user: User = Depends(current_active_user)
+    ) -> IBasket:
+    return await service.get(user.id)
 
 
-@router.put("/", response_model=basket_schemas.BasketItem)
-async def change_basket_item(item: basket_schemas.BasketItemChange, 
-                            current_user: users_schemas.User = Depends(get_current_user),
-                            db: Session = Depends(get_db)):
-    return await basket_controller.change_basket_item(item, current_user.id, db)
+@router.put("/")
+async def change_basket_item(item: IBasketItemChange, 
+                            user: User = Depends(current_active_user)
+                            ) -> Union[IBasketItemChange, dict]:
+    return await service.change_basket_item(item, user.id)
 
 
 @router.post("/order/")
-async def order_basket(order_info: basket_schemas.OrderInfo,
-                    current_user: users_schemas.User = Depends(get_current_user), 
-                    db: Session = Depends(get_db)):
-    return await basket_controller.order_basket(order_info, current_user, db)
+async def process_order(order_info: IOrderInfo,
+                    user: User = Depends(current_active_user)):
+    return await service.process_order(order_info, user)

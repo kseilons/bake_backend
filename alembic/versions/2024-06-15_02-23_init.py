@@ -1,8 +1,8 @@
 """Init
 
-Revision ID: 4ada3e404db4
+Revision ID: feb3b3c92573
 Revises: 
-Create Date: 2024-06-14 16:46:48.035705
+Create Date: 2024-06-15 02:23:24.830273
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4ada3e404db4'
+revision: str = 'feb3b3c92573'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -64,12 +64,12 @@ def upgrade() -> None:
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('sort', sa.Integer(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
-    sa.Column('old_price', sa.Integer(), nullable=False),
+    sa.Column('old_price', sa.Integer(), nullable=True),
     sa.Column('is_hit', sa.Boolean(), nullable=False),
     sa.Column('brand', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=False),
     sa.Column('article', sa.String(), nullable=False),
-    sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
+    sa.ForeignKeyConstraint(['category_id'], ['category.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('title')
     )

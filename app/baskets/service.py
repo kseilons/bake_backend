@@ -1,104 +1,109 @@
 
 
+from uuid import UUID
 from fastapi import HTTPException
 from requests import Session
-from app.baskets import baskets as basket_schemas
-from app.auth import schemas as users_schemas
-from app.baskets import crud as crud_baskets
+from app.auth.models import User
+from app.baskets.crud import crud_baskets 
 from app.baskets.models import Basket 
+from app.baskets.schemas import IBasket, IBasketCreate, IBasketItemChange, IOrderInfo, IOrderResponse
 from app.utils.email.smtp_server import email_sender
-from app.setting import manager_email
+from app.core.config import settings
 from app.utils.email.template_renderer import render_template
 
-async def get_basket(user_id: int, db: Session):
-    basket = await crud_baskets.get_basket_by_user_id(user_id, db)
+async def get(user_id: UUID):
+    basket = await crud_baskets.get_by_user_id(user_id)
     if not basket:
-        basket = await crud_baskets.create_basket(user_id, db)
-    
+        basket_create = IBasketCreate(user_id=user_id)
+        basket = await crud_baskets.create(obj_in=basket_create)
+        basket = await crud_baskets.get_by_user_id(user_id)
     return basket
 
 
-async def change_basket_item(item: basket_schemas.BasketItemChange, 
-                            user_id: users_schemas.User,
-                            db: Session):
-    basket = await get_basket(user_id, db)
-    basket_item = await crud_baskets.change_basket_item(item, basket.id, db)
-    await crud_baskets.update_basket_timestamp(basket, db)
+async def change_basket_item(item: IBasketItemChange, 
+                            user_id: UUID,
+    ):
+    basket = await get(user_id)
+    basket_item = await crud_baskets.change_basket_item(item=item, basket_id=basket.id)
+    if basket_item is None:
+        return {"message": "Basket item deleted"}
     return basket_item
 
 
-async def order_basket(order_info: basket_schemas.OrderInfo,current_user: users_schemas.User , db: Session):
-    basket = await get_basket(current_user.id, db)
+async def process_order(order_info: IOrderInfo,user: User ):
+    basket = await crud_baskets.get_by_user_id(user.id)
     if not basket.items:
         raise HTTPException(status_code=400, detail="Корзина пуста. Невозможно оформить заказ.")
     
-    await send_email_for_manager(order_info, current_user, basket)
-    await send_email_for_user(order_info, current_user, basket)
+    await send_email_for_manager(order_info, user, basket)
+    await send_email_for_user(order_info, user, basket)
     
-    await crud_baskets.delete_basket_items(basket, db)
-    return basket_schemas.OrderResponse(message="Заказ успешно оформлен.")
+    await crud_baskets.delete_basket_items(basket, order_info.ids)
+    return IOrderResponse(message="Заказ успешно оформлен.")
     
     
-async def send_email_for_manager(order_info: basket_schemas.OrderInfo, current_user: users_schemas.User, basket: Basket):
+async def send_email_for_manager(order_info: IOrderInfo, user: User, basket: Basket):
     context = {
         "shipping_method": order_info.shipping_method,
         "user_phone": order_info.phone,
-        "user_email": current_user.email,
+        "user_email": user.email,
         "user_name": order_info.name,
         "user_surname": order_info.surname,
         "user_patronymic": order_info.patronymic,
-        "region": order_info.user_address.region,
-        "street": order_info.user_address.street,
-        "city": order_info.user_address.city,
-        "num_of_house": order_info.user_address.num_of_house,
-        "postcode": order_info.user_address.postcode,
+        "region": order_info.region,
+        "street": order_info.street,
+        "city": order_info.city,
+        "num_of_house": order_info.num_of_house,
+        "postcode": order_info.postcode,
         "basket": []
     }
     for item in basket.items:
-        context['basket'].append({
-            "product_name": item.product.title,
-            "product_article": item.product.info[0].article if item.product.info else None,
-            "product_brand": item.product.brand,
-            "product_price": item.product.price,
-            "product_preview_img": item.product.preview_img
-        })
+        if (item.product_id in (order_info.ids)):
+            context['basket'].append({
+                "product_name": item.title,
+                "product_article": item.article,
+                "product_brand": item.brand,
+                "product_price": item.price,
+                "product_preview_img": item.preview_img
+            })
     
-    html_content = render_template('completed_order.html', context)
+    html_content = render_template(settings.template.ORDER_FOR_MANAGER, context)
     # Отправка письма с подтверждением
     await email_sender.send_email(
-        email_to=manager_email,
+        email_to=settings.email.MANAGER_EMAIL,
         subject='Пользователь сделал заказ',
         body=html_content
     )
 
     
-async def send_email_for_user(order_info: basket_schemas.OrderInfo, current_user: users_schemas.User, basket: Basket):
+async def send_email_for_user(order_info: IOrderInfo, user: User, basket: Basket):
     context = {
         "shipping_method": order_info.shipping_method,
         "user_phone": order_info.phone,
-        "user_email": current_user.email,
+        "user_email": user.email,
         "user_name": order_info.name,
         "user_surname": order_info.surname,
         "user_patronymic": order_info.patronymic,
-        "region": order_info.user_address.region,
-        "city": order_info.user_address.city,
-        "num_of_house": order_info.user_address.num_of_house,
-        "postcode": order_info.user_address.postcode,
+        "region": order_info.region,
+        "city": order_info.city,
+        "num_of_house": order_info.num_of_house,
+        "postcode": order_info.postcode,
         "basket": []
     }
     for item in basket.items:
-        context['basket'].append({
-            "product_name": item.product.title,
-            "product_article": item.product.info[0].article if item.product.info else None,
-            "product_brand": item.product.brand,
-            "product_price": item.product.price,
-            "product_preview_img": item.product.preview_img
-        })
+        if (item.product_id in (order_info.ids)):
+            context['basket'].append({
+                "product_name": item.title,
+                "product_article": item.article,
+                "product_brand": item.brand,
+                "product_price": item.price,
+                "product_preview_img": item.preview_img
+            })
     
-    html_content = render_template('order_for_user.html', context)
+    html_content = render_template(settings.template.ORDER_FOR_USER, context)
     # Отправка письма с подтверждением
     await email_sender.send_email(
-        email_to=current_user.email,
+        email_to=user.email,
         subject='Ваш заказ',
         body=html_content
     )

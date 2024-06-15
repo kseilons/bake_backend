@@ -21,7 +21,7 @@ class Product(Base):
     category_id: Mapped[int] = mapped_column(ForeignKey('category.id', ondelete='CASCADE'))
     sort: Mapped[int]
     price: Mapped[int]
-    old_price: Mapped[int]
+    old_price: Mapped[int] = mapped_column(nullable=True)
     is_hit: Mapped[bool]
     brand: Mapped[str]
     description: Mapped[str]

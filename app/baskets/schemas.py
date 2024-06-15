@@ -1,44 +1,57 @@
+from uuid import UUID
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
-from app.auth.schemas import UserAddress
 
 
-class BasketItem(BaseModel):
+class IBasketItem(BaseModel):
+    product_id: int  = None
+    amount: int  = None
+    price: int  = None
+    preview_img: Optional[str] = None
+    title: Optional[str] = None
+    category_name: Optional[str] = None
+    brand: Optional[str] = None
+    old_price: Optional[int] = None
+    price: Optional[int] = None 
+    is_hit: Optional[bool] = None
+    article: Optional[str] = None
+
+
+
+class IBasketBase(BaseModel):
+    user_id: Optional[UUID] = None
+    updated_date: datetime = datetime.now()
+
+
+class IBasketItemChange(BaseModel):
     product_id: int
     amount: int
-    class Config:
-        from_attributes = True
 
-
-class BasketBase(BaseModel):
-    user_id: Optional[int] = None
-    updated_date: datetime = datetime.now()
-    items: Optional[List[BasketItem]] = None
-
-
-class BasketItemChange(BasketItem):
+class IBasketCreate(IBasketBase):
     pass
 
-
-
-class Basket(BasketBase):
-    id: int
-
-    class Config:
-        from_attributes = True
+    
+class IBasket(IBasketBase):
+    id: Optional[int] = None
+    items: Optional[List[IBasketItem]] = None
 
 
 
-class OrderInfo(BaseModel):
+
+class IOrderInfo(BaseModel):
     shipping_method: str
-    user_address: UserAddress
     phone: str
     name: str
     surname: str
     patronymic: str
+    region: Optional[str]
+    city: Optional[str]
+    street: Optional[str]
+    num_of_house: Optional[str]
+    postcode: Optional[int]
+    ids: Optional[List[int]]
     
-    
-class OrderResponse(BaseModel):
+class IOrderResponse(BaseModel):
     message: str

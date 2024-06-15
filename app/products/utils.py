@@ -14,7 +14,7 @@ async def get_product_filter_params(
     categories: List[int] = Query(None, description="Список категорий для фильтрации принимает их id"),
     page: int = Query(1, description="Номер страницы пагинации"),
     page_limit: int = Query(12, description="Лимит страницы"),
-    sort_by: Optional[str] = Query(None, description="Параметр сортировки (price, popularity, date)"),
+    sort_by: Optional[str] = Query(None, description="Параметр сортировки (price, sort, create_date, id)"),
     sort_order: str = Query("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)"),
     is_hit: Optional[bool] = Query(None, description="Возвращает хит продукты"),
     is_new: Optional[bool] = Query(None, description="Возвращает новые продукты")
