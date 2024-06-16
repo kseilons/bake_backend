@@ -63,11 +63,6 @@ async def get_products(
 ) -> IProductList:
     return await service.get_multi_filtered(params)
 
-@router.get("/test")
-async def get_products(
-    
-) -> IProduct:
-    return await crud_product.get_test(id=6)
 
 @router.get("/{product_id}")
 async def get_product(product_id: int = Depends(is_valid_product_id)) -> IProduct:

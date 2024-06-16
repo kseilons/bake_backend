@@ -12,7 +12,7 @@ from ..db.session import Base
 class Basket(Base):
     __tablename__ = "basket"
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("user.id"))
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("user.id", ondelete="CASCADE"))
     updated_date: Mapped[datetime.datetime] = mapped_column(default=datetime.UTC)
 
     items: Mapped[List["BasketItem"]] = relationship(
