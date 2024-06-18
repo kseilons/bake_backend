@@ -37,8 +37,8 @@ async def validation_exception_handler(request: Request, exc: ValidationExceptio
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Здесь можно указать список разрешенных доменов
+    allow_origins=["http://localhost:3000"],  # Здесь можно указать список разрешенных доменов
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET", "PATCH", "PUT", "DELETE"],
     allow_headers=["*"],
 )
