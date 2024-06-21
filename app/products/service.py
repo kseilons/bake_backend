@@ -7,7 +7,7 @@ from app.categories.deps import is_valid_category_id
 from app.products.utils import apply_product_filter
 from .crud import crud_product
 from .models import Product
-from .schemas import IProductCreate, IProductFilterParams, IProductPriceUpdate, IProductUpdate, IProduct
+from .schemas import IProductCreate, IProductFilterParams, IProductPreview, IProductPriceUpdate, IProductSearch, IProductUpdate, IProduct
 
 async def create(catalog: IProductCreate):
     product = await crud_product.create(obj_in=catalog)
@@ -81,7 +81,7 @@ async def get_multi_filtered(params: IProductFilterParams,):
                                                     limit=params.page_limit,
                                                     order=params.sort_order, 
                                                     order_by=params.sort_by)
-    products = [IProduct.from_orm(product) for product in result['data']]
+    products = [IProductPreview.from_orm(product) for product in result['data']]
     return {"products": products, "total_pages": result['total_pages'], "total_count": result['total_count']}
 
 
@@ -108,5 +108,5 @@ async def get_multi_search(search: str, page_limit: int = 10, page: int = 0):
     result = await crud_product.get_multi_ordered(query=query, 
                                                     skip= skip,
                                                     limit=page_limit)
-    products = [IProduct.from_orm(product) for product in result['data']]
+    products = [IProductSearch.from_orm(product) for product in result['data']]
     return {"products": products, "total_pages": result['total_pages'], "total_count": result['total_count']}

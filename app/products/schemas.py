@@ -66,13 +66,17 @@ class IProductPreview(BaseModel):
     old_price: Optional[int] = None
     price: Optional[int] = None 
     is_hit: Optional[bool] = None
+    is_sale: Optional[bool] = None
 
     @classmethod
     def from_orm(cls, product: Product):
         # Создаем объект IProduct из существующего объекта Product
         product_data = cls.model_validate(product.__dict__)
         # Обновляем его с помощью поля category_name
-        return product_data.model_copy(update={"category_name": product.category.name if product.category else None})
+        return product_data.model_copy(update={
+            "category_name": product.category.name if product.category else None,
+            "is_sale": bool(product.old_price) if product.old_price is not None else False
+            })
     
 
 
@@ -115,6 +119,7 @@ class IProductSearch(BaseModel):
     old_price: Optional[int] = None
     price: Optional[int] = None 
     is_hit: Optional[bool] = None
+    is_sale: Optional[bool] = None
     article: Optional[str] = None
     description: Optional[str] = None
 
@@ -123,7 +128,10 @@ class IProductSearch(BaseModel):
         # Создаем объект IProduct из существующего объекта Product
         product_data = cls.model_validate(product.__dict__)
         # Обновляем его с помощью поля category_name
-        return product_data.model_copy(update={"category_name": product.category.name if product.category else None})
+        return product_data.model_copy(update={
+            "category_name": product.category.name if product.category else None,
+            "is_sale": bool(product.old_price) if product.old_price is not None else False
+            })
     
 
 
@@ -145,4 +153,4 @@ class IProductFilterParams(BaseModel):
     sort_order: str = Field("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)")
     is_hit: Optional[bool] = Field(None, description="Возвращает хит продукты")
     is_new: Optional[bool] = Field(None, description="Возвращает новые продукты")
-
+    is_sale: Optional[bool] = Field(None, description="Возвращает продукты со скидкой")

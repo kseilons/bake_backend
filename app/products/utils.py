@@ -17,7 +17,8 @@ async def get_product_filter_params(
     sort_by: Optional[str] = Query(None, description="Параметр сортировки (price, sort, create_date, id)"),
     sort_order: str = Query("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)"),
     is_hit: Optional[bool] = Query(None, description="Возвращает хит продукты"),
-    is_new: Optional[bool] = Query(None, description="Возвращает новые продукты")
+    is_new: Optional[bool] = Query(None, description="Возвращает новые продукты"),
+    is_sale: Optional[bool] = Query(None, description="Возвращает продукты со скидкой")
 ) -> IProductFilterParams:
     return IProductFilterParams(
         min_price=min_price,
@@ -29,7 +30,8 @@ async def get_product_filter_params(
         sort_by=sort_by,
         sort_order=sort_order,
         is_hit=is_hit,
-        is_new=is_new
+        is_new=is_new,
+        is_sale=is_sale
     )
     
 async def apply_product_filter(query, params: IProductFilterParams):
@@ -42,6 +44,8 @@ async def apply_product_filter(query, params: IProductFilterParams):
         query = query.where(Product.brand.in_(params.brands))
     if params.is_hit is not None:
         query = query.where(Product.is_hit == params.is_hit)
+    if params.is_sale is not None:
+        query = query.where(Product.old_price.isnot(None))
         
     if params.categories:
         categories = await crud_category.get_categories_id_with_children(params.categories)
