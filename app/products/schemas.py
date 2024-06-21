@@ -130,7 +130,7 @@ class IProductSearch(BaseModel):
 class IProductList(PaginationList):
     products: List[IProductPreview]
 
-class IProductSeacrhList(PaginationList):
+class IProductSearchList(PaginationList):
     products: List[IProductSearch]
     
     
@@ -145,3 +145,4 @@ class IProductFilterParams(BaseModel):
     sort_order: str = Field("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)")
     is_hit: Optional[bool] = Field(None, description="Возвращает хит продукты")
     is_new: Optional[bool] = Field(None, description="Возвращает новые продукты")
+

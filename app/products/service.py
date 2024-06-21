@@ -1,7 +1,7 @@
 
 from typing import List
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.orm import joinedload
 from app.categories.deps import is_valid_category_id
 from app.products.utils import apply_product_filter
@@ -81,5 +81,32 @@ async def get_multi_filtered(params: IProductFilterParams,):
                                                     limit=params.page_limit,
                                                     order=params.sort_order, 
                                                     order_by=params.sort_by)
+    products = [IProduct.from_orm(product) for product in result['data']]
+    return {"products": products, "total_pages": result['total_pages'], "total_count": result['total_count']}
+
+
+async def get_multi_search(search: str, page_limit: int = 10, page: int = 0):
+    query = (
+        select(
+            Product,
+        )
+        .options(joinedload(Product.properties),\
+                        joinedload(Product.images),\
+                        joinedload(Product.files),\
+                        joinedload(Product.category))
+    )
+    search_pattern = f"%{search}%"
+    query = query.where(
+        or_(
+            Product.title.ilike(search_pattern),
+            Product.description.ilike(search_pattern),
+            Product.article.ilike(search_pattern),
+            Product.brand.ilike(search_pattern)
+        )
+    )
+    skip = (page - 1) * page_limit
+    result = await crud_product.get_multi_ordered(query=query, 
+                                                    skip= skip,
+                                                    limit=page_limit)
     products = [IProduct.from_orm(product) for product in result['data']]
     return {"products": products, "total_pages": result['total_pages'], "total_count": result['total_count']}

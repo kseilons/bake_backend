@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from app.auth.models import User
 from app.auth.auth import current_active_user, current_superuser
 from app.products.deps import is_valid_product, is_valid_product_id, product_valid, product_valid_by_parser
-from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPriceUpdate, IProductUpdate
+from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPriceUpdate, IProductSearchList, IProductUpdate
 from app.products import service
 from app.products.utils import get_product_filter_params
 from app.products.crud import crud_product
@@ -81,13 +81,7 @@ async def update_price(
 ):
     return await service.update_price(product_price)
     
-# @router.get("/search/", response_model=schemas.ProductSearchList)
-# async def search(query: str, db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
-#     total_pages, total_count, products = await controller.search_products(db, query, limit, offset)
-#     if products:
-#         return schemas.ProductSearchList(
-#             total_pages=total_pages,
-#             total_count=total_count,
-#             products=products)
-#     else:
-#         raise HTTPException(status_code=404, detail="No products found")
+@router.get("/search/")
+async def search(query: str, page_limit: int = 10, page: int = 1
+                )-> IProductSearchList:
+    return await service.get_multi_search(query, page_limit, page)
