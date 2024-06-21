@@ -1,11 +1,13 @@
 
+from typing import List
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from app.categories.deps import is_valid_category_id
 from app.products.utils import apply_product_filter
 from .crud import crud_product
 from .models import Product
-from .schemas import IProductCreate, IProductFilterParams, IProductUpdate, IProduct
+from .schemas import IProductCreate, IProductFilterParams, IProductPriceUpdate, IProductUpdate, IProduct
 
 async def create(catalog: IProductCreate):
     product = await crud_product.create(obj_in=catalog)
@@ -23,6 +25,39 @@ async def update(
         await is_valid_category_id(product_new.category_id)  
     product = await crud_product.update(obj_current=product, obj_new=product_new)
     return IProduct.from_orm(product)
+
+
+async def update_prices(
+    product_prices: List[IProductPriceUpdate]
+):  
+    failed_articles = []
+    for product_price in product_prices:
+        success = await crud_product.update_price(product_price)
+        if not success:
+            failed_articles.append(product_price.article)
+    return {
+        "status": "success",
+        "message": "Prices updated successfully",
+        "failed_articles": failed_articles
+    }
+    
+    
+async def update_price(
+    product_price: IProductPriceUpdate
+):  
+    success = await crud_product.update_price(product_price)
+    if not success:
+        raise HTTPException(status_code=500, detail={
+            "status": "failed",
+            "message": "Price update failed",
+            "failed_articles": product_price.article
+        })
+    return {
+        "status": "success",
+        "message": "Price updated successfully",
+        "failed_articles": None
+    }
+
 
 async def delete(catalog_id: int):
     return await crud_product.remove(id=catalog_id)

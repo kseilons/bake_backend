@@ -2,10 +2,11 @@
 from logging import getLogger
 from typing import Any
 from fastapi import Depends, HTTPException
+from psycopg2 import IntegrityError
 from app.auth.models import User
 from app.categories.models import Category
 from app.utils.base_crud import CRUDBase
-from .schemas import IProductCreate, IProduct, IProductUpdate
+from .schemas import IProductCreate, IProduct, IProductPriceUpdate, IProductUpdate
 from .models import Product, ProductFile, ProductImage, ProductProperty
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -132,4 +133,32 @@ class CRUDProduct(CRUDBase[Product, IProductCreate, IProductUpdate]):
                 ) from e
             await db_session.commit()
             return await self.get(id=obj_current.id)
+        
+        
+    async def update_price(self, product_update: IProductPriceUpdate) -> bool:
+        async with async_session_maker() as db_session:
+            query = select(Product).where(Product.article == product_update.article)
+            result = await db_session.execute(query)
+            product = result.scalar_one_or_none()
+            
+            if not product:
+                return False
+            
+            if product.price != product_update.price:
+                if product.old_price: 
+                    if product_update.price >= product.old_price:
+                        product.old_price = None
+                    else:
+                        product.old_price = product.price
+                product.price = product_update.price
+                
+                try:
+                    db_session.add(product)
+                    await db_session.commit()
+                except IntegrityError as e:
+                    await db_session.rollback()
+                    return False
+        return True
+
+
 crud_product = CRUDProduct(Product)

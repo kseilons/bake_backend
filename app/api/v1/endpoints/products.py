@@ -1,13 +1,12 @@
 import logging
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends
 
 from app.auth.models import User
 from app.auth.auth import current_active_user, current_superuser
 from app.products.deps import is_valid_product, is_valid_product_id, product_valid, product_valid_by_parser
-from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPreview, IProductUpdate
+from app.products.schemas import IProductCreate, IProduct, IProductFilterParams, IProductList, IProductPriceUpdate, IProductUpdate
 from app.products import service
 from app.products.utils import get_product_filter_params
 from app.products.crud import crud_product
@@ -68,7 +67,20 @@ async def get_products(
 async def get_product(product_id: int = Depends(is_valid_product_id)) -> IProduct:
     return await service.get_by_id(product_id)
 
-
+@router.put("/update_prices")
+async def update_prices(
+    product_prices: List[IProductPriceUpdate],
+    current_user: User = Depends(current_superuser)
+):
+    return await service.update_prices(product_prices)
+    
+@router.put("/update_price")
+async def update_price(
+    product_price: IProductPriceUpdate,
+    current_user: User = Depends(current_superuser)
+):
+    return await service.update_price(product_price)
+    
 # @router.get("/search/", response_model=schemas.ProductSearchList)
 # async def search(query: str, db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
 #     total_pages, total_count, products = await controller.search_products(db, query, limit, offset)

@@ -53,6 +53,9 @@ class IProductUpdate(BaseModel):
     description: Optional[str] = None
     article: str = None
 
+class IProductPriceUpdate(BaseModel):
+    article: str 
+    price: int
 
 class IProductPreview(BaseModel):
     id: int = None
