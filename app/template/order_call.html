@@ -25,7 +25,11 @@
           <div style="display: flex; margin-bottom: 20px;min-height: 80px;justify-content: center;align-items: center;border-radius: 10px;background-color: white; font-size: 18px;color: black;font-family: GTText, -apple-system, BlincMacSystemFont, 'Helvetica Neue', roboto, Helvetica, 'Lucida Grande', tahoma, verdana, arial, sans-serif;font-style:normal;text-align: left;max-width: 960px;">
             Уважаемый менеджер,
             <br><br>
-            Пользователь с именем {{name}} и номером телефона {{phone}} запросил звонок. Пожалуйста, свяжитесь с ним в ближайшее время.
+            Пользователь с именем {{name}} и номером телефона 
+            <a href="tel:{{ user_phone }}" style="display: inline;color: #fc4c04;text-decoration: underline;" target="_blank" rel=" noopener noreferrer">
+              <span class="js-phone-number">
+                {{ user_phone }}</span>
+            </a> запросил звонок. Пожалуйста, свяжитесь с ним в ближайшее время.
             <br><br>
             С уважением,
             <br>
@@ -36,9 +40,22 @@
             Команда Ломоносовского печного клуба<br>
             Россия, Санкт-Петербург,<br>
             г. Ломоносов, ул. Привокзальная, д.2, стр.3<br>
-            +7-812-957-97-56<br>
-            e-mail: strojkor@yandex.ru<br>
-            <a href="https://lom-pk.ru/" style="color:#1C1E23 ;">https://lom-pk.ru/</a>
+            <a href="tel:+7-812-957-97-56" style="display: inline;color:#1C1E23 ;text-decoration: underline;" target="_blank" rel=" noopener noreferrer">
+              <span>
+                +7-812-957-97-56</span>
+            </a>
+            <br>
+            e-mail:
+            <a href="mailto:strojkor@yandex.ru" style="display: inline;color:#1C1E23 ;text-decoration: underline; cursor: pointer;" target="_blank" rel=" noopener noreferrer">
+              <span>
+                strojkor@yandex.ru</span>
+            </a>
+            
+            <br>
+               <a href="https://lom-pk.ru/" style="display: inline;color:#1C1E23 ;text-decoration: underline;" target="_blank" rel=" noopener noreferrer">
+              <span>
+                https://lom-pk.ru/</span>
+            </a>
           </div>
         </td>
       </tr>

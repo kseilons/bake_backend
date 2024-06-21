@@ -38,7 +38,7 @@ async def process_order(order_info: IOrderInfo,user: User ):
     await send_email_for_manager(order_info, user, basket)
     await send_email_for_user(order_info, user, basket)
     
-    # await crud_baskets.delete_basket_items(basket, order_info.ids)
+    await crud_baskets.delete_basket_items(basket, order_info.ids)
     return IOrderResponse(message="Заказ успешно оформлен.")
     
     
