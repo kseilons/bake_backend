@@ -16,6 +16,7 @@ class IBasketItem(BaseModel):
     old_price: Optional[int] = None
     price: Optional[int] = None 
     is_hit: Optional[bool] = None
+    is_sale: Optional[bool] = None
     article: Optional[str] = None
 
 

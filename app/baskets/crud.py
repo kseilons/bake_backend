@@ -38,7 +38,8 @@ class CRUDBasket(CRUDBase[Basket, IBasketCreate, IBasketCreate]):
                     category_name=item.product.category.name if item.product.category.name else None,
                     brand=item.product.brand if item.product.brand else None,
                     old_price=item.product.old_price if item.product.old_price else None,
-                    is_hit=item.product.is_hit if item.product.is_hit else None,
+                    is_hit=item.product.is_hit if item.product.is_hit else False,
+                    is_sale=bool(item.product.old_price) if item.product.old_price is not None else False,
                     preview_img=item.product.preview_img if item.product.preview_img else None
                 )
                 for item in basket.items

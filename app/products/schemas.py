@@ -132,7 +132,7 @@ class IProductSearch(BaseModel):
             "category_name": product.category.name if product.category else None,
             "is_sale": bool(product.old_price) if product.old_price is not None else False
             })
-    
+
 
 
 class IProductList(PaginationList):
