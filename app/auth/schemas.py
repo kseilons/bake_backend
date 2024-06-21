@@ -23,6 +23,7 @@ class IUserUpdate(schemas.BaseUserUpdate):
     is_active: Optional[bool] = None
     is_superuser: Optional[bool] = None
     is_verified: Optional[bool] = None
+    area: Optional[str] = None
     region: Optional[str] = None
     city: Optional[str] = None
     street: Optional[str] = None
@@ -39,6 +40,7 @@ class IUser(schemas.BaseUser[uuid.UUID]):
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
+    area: Optional[str] = None
     region: Optional[str] = None
     city: Optional[str] = None
     street: Optional[str] = None

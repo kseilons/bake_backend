@@ -46,6 +46,7 @@ class IOrderInfo(BaseModel):
     name: str
     surname: str
     patronymic: str
+    area: Optional[str]
     region: Optional[str]
     city: Optional[str]
     street: Optional[str]

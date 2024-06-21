@@ -38,7 +38,7 @@ async def process_order(order_info: IOrderInfo,user: User ):
     await send_email_for_manager(order_info, user, basket)
     await send_email_for_user(order_info, user, basket)
     
-    await crud_baskets.delete_basket_items(basket, order_info.ids)
+    # await crud_baskets.delete_basket_items(basket, order_info.ids)
     return IOrderResponse(message="Заказ успешно оформлен.")
     
     
@@ -50,19 +50,25 @@ async def send_email_for_manager(order_info: IOrderInfo, user: User, basket: Bas
         "user_name": order_info.name,
         "user_surname": order_info.surname,
         "user_patronymic": order_info.patronymic,
+        "area": order_info.area,
         "region": order_info.region,
         "street": order_info.street,
         "city": order_info.city,
         "num_of_house": order_info.num_of_house,
         "postcode": order_info.postcode,
+        "sum": 0,
         "basket": []
     }
+    products_url = settings.FRONTEND_URL
     for item in basket.items:
         if (item.product_id in (order_info.ids)):
+            context['sum'] += item.price
             context['basket'].append({
+                "product_href": f"{products_url}/products/{item.product_id}",
                 "product_name": item.title,
                 "product_article": item.article,
                 "product_brand": item.brand,
+                "product_amount": item.amount,
                 "product_price": item.price,
                 "product_preview_img": item.preview_img
             })
@@ -84,18 +90,25 @@ async def send_email_for_user(order_info: IOrderInfo, user: User, basket: Basket
         "user_name": order_info.name,
         "user_surname": order_info.surname,
         "user_patronymic": order_info.patronymic,
+        "area": order_info.area,
         "region": order_info.region,
+        "street": order_info.street,
         "city": order_info.city,
         "num_of_house": order_info.num_of_house,
         "postcode": order_info.postcode,
+        "sum": 0,
         "basket": []
     }
+    products_url = settings.FRONTEND_URL
     for item in basket.items:
         if (item.product_id in (order_info.ids)):
+            context['sum'] += item.price
             context['basket'].append({
+                "product_href": f"{products_url}/products/{item.product_id}",
                 "product_name": item.title,
                 "product_article": item.article,
                 "product_brand": item.brand,
+                "product_amount": item.amount,
                 "product_price": item.price,
                 "product_preview_img": item.preview_img
             })

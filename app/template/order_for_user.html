@@ -9,154 +9,177 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
   <meta name="supported-color-schemes" content="light dark" />
+</head>
 
-  <body style="Margin:0;padding:0;min-width:100%;background-color:white;display: flex;justify-content: center;">
-<section style="background-color: rgba(109, 255, 93, 0.2);width: 100%;height: 100%;padding-bottom: 100px;">    
-<table style="margin-left: auto;
-margin-right: auto;">
-  <tr>
-    <td>
-    <table align="center" border="0" cellspacing="0" cellpadding="0" role="presentation"
-           style="color:#1C1E23;padding: 40px;font-family: 'Poppins',sans-serif, Arial, Helvetica;Margin:0;padding:0;max-width: 1040px;">
-           <tr style="margin-bottom: 20px;border-radius: 10px;">
-            <td align="center">
-                <div style="display: flex;min-height: 80px;margin-top: 20px;justify-content: center;align-items: center;border-radius: 8px;background-color: #850A0A; font-size:20px;color: white;font-family:sans-serif;font-style:normal;text-align: center;max-width: 200px;max-height: 80px;">
-                    Ломоносовский печной клуб
-                </div>
-            </td>
-        </tr>
-        
-  <tr>
-    <td>
-      <div style="height: 80px"></div>
-      </td>
-  </tr>
-  <tr>
-    <td>
-    <table align="center" border="0" cellspacing="0" cellpadding="0" role="presentation"
-           style="margin-top: 20px;color:#1C1E23;padding: 40px;font-family: 'Poppins',sans-serif, Arial, Helvetica;Margin:0;padding:0;max-width: 1040px;">
-    <tr style="max-width: 1040px;max-height: 640px;border-radius: 10px;background-color:white ;">
-        <td align="center" style="max-width: 1040px;border-radius: 10px;">
-            
-          <div style="display: flex;font-weight: bold; min-height: 80px;justify-content: center;align-items: center;border-radius: 10px;background-color: white  ; font-size: 24px;color: black;font-family:Arial, Helvetica, sans-serif;font-style:normal;text-align: center;width: 100%;">
-                Информация о пользователе
-            </div>
-            <div style="display: flex; min-height: 80px;margin-bottom: 35px;margin-top: 20px;margin-left: 40px;justify-content: left;align-items: left;border-radius: 10px;background-color: white; font-size: 18px;color: black;font-family:Arial, Helvetica, sans-serif;font-style:normal;text-align: left;max-width: 960px ;max-height: 200px;">
-                ФИО: Ральников Александр Максимович
-                <br><br>
-                Email: {{ user_email }}
-                <br><br>
-                Телефон: {{ user_phone }}
-                <br><br>
-                Метод доставки: {{ shipping_method }}
-                <br><br>
-                Адрес доставки: {{ region }}, {{ city }}, {{street}},{{ num_of_house }}, {{ postcode }}
-            </div>
-            <div style="max-height: 160px; text-align: right;margin-right: 40px;margin-bottom: 40px;">
-              С уважением,<br>
-              Команда Ломоносовского печного клуба<br>
-              Россия, Санкт-Петербург,<br>
-              г. Ломоносов, ул. Привокзальная, д.2, 2 этаж<br>
-              +7-812-957-97-56<br>
-              e-mail: info@lom-pk.ru<br>
-              <a href="https://lom-pk.ru/">https://lom-pk.ru/</a>
-          </div>
-        </td>
-    </tr>
-    <tr>
-      <td>
-        <div style="height: 80px"></div>
-        </td>
-    </tr>
-    <tr>
-      <td>
-      <table align="center" border="0" cellspacing="0" cellpadding="0" role="presentation"
-             style="margin-top: 20px;color:#1C1E23;padding: 40px;font-family: 'Poppins',sans-serif, Arial, Helvetica;Margin:0;padding:0;max-width: 1040px;">
-      <tr style="max-width: 1040px;max-height: 640px;border-radius: 10px;background-color:white ;">
-          <td align="center" style="max-width: 1040px;border-radius: 10px;">
-              
-            <div style="display: flex;font-weight: bold; min-height: 80px;justify-content: center;align-items: center;border-radius: 10px;background-color: white  ; font-size: 24px;color: black;font-family:Arial, Helvetica, sans-serif;font-style:normal;text-align: center;width: 100%;">
-                  Товары в заказе
-              </div>
-              <section style="display: flex; min-height: 80px;margin-top: 20px;margin-left: 40px;justify-content: center;align-items: center;border-radius: 10px;background-color: white; font-size: 18px;color: black;font-family:Arial, Helvetica, sans-serif;font-style:normal;text-align: left;max-width: 960px ;">
-                  <table>
-                    <tr>
-                      <td>
-                        <div style="width: 280px;justify-content: center;align-items: center;border-style: solid;text-align: center;height: 400px;border-radius: 8px;border-color:#787777;border-width: 2px;margin-left: 160px;margin-right: 80px;">
-                          <img src="C:\Users\blessed\Documents\amin.png" style="max-width: 280px;max-height: 220px;">
-                          <p style="font-size: 16px;justify-content: center;align-items: center;color:#4A4A4A ;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-weight: bold;">Каминные топки</p>
-                          <p style="font-size: 16px;color: #000;width: 280px;justify-content: center;align-items: center;font-weight: bold;">Каминная топка <br>Астов АРТ М 700</p>
-                          <p style="font-size: 16px;color:#A70B0B ;font-weight: bold;">147 000 руб.</p>
-                          <p style="font-size: 16px;color:#000 ;">Арт. Н0023288</p>
-                          
-                      </div>
-                    </td>
-                    <td>
-                    <div style="width: 280px;justify-content: center;align-items: center;border-style: solid;text-align: center;height: 400px;border-radius: 8px;border-color:#787777;border-width: 2px;margin-left: 80px;margin-right: 160px;">
-                      <img src="C:\Users\blessed\Documents\amin.png" style="max-width: 280px;max-height: 220px;">
-                      <p style="font-size: 16px;justify-content: center;align-items: center;color:#4A4A4A ;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-weight: bold;">Каминные топки</p>
-                      <p style="font-size: 16px;color: #000;width: 280px;justify-content: center;align-items: center;font-weight: bold;">Каминная топка <br>Астов АРТ М 700</p>
-                      <p style="font-size: 16px;color:#A70B0B ;font-weight: bold;">147 000 руб.</p>
-                      <p style="font-size: 16px;color:#000 ;">Арт. Н0023288</p>
-                      
-                  </div>
-                  </td>
-                  <tr style="height: 40px;"></tr>
+<body style="Margin:0;padding:0;min-width:100%;background-color:white;display: flex;justify-content: center;">
+  <section style="width: 100%;height: 100%;padding-bottom: 100px;">
+    <table style="text-align: center;color: #222;font-family: Arial, serif;font-size: 15px;margin: 0;padding: 0;border: 0;" bgcolor="#ebebeb" width="100%" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <td>
+            <center style="min-width: 410px;max-width: 600px;margin: 0 auto;padding: 30px 5px;">
+              <table style="text-align: center;border-radius: 10px;margin: 0 0 8px;padding: 0;border: 0;" bgcolor="#fff" width="100%" cellpadding="0" cellspacing="0">
+                <tbody>
                   <tr>
-                    <td>
-                      <div style="width: 280px;justify-content: center;align-items: center;border-style: solid;text-align: center;height: 400px;border-radius: 8px;border-color:#787777;border-width: 2px;margin-left: 160px;margin-right: 80px;">
-                        <img src="C:\Users\blessed\Documents\amin.png" style="max-width: 280px;max-height: 220px;">
-                        <p style="font-size: 16px;justify-content: center;align-items: center;color:#4A4A4A ;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-weight: bold;">Каминные топки</p>
-                        <p style="font-size: 16px;color: #000;width: 280px;justify-content: center;align-items: center;font-weight: bold;">Каминная топка <br>Астов АРТ М 700</p>
-                        <p style="font-size: 16px;color:#A70B0B ;font-weight: bold;">147 000 руб.</p>
-                        <p style="font-size: 16px;color:#000 ;">Арт. Н0023288</p>
-                        
-                    </div>
-                  </td>
-                  <td>
-                    <div style="width: 280px;justify-content: center;align-items: center;border-style: solid;text-align: center;height: 400px;border-radius: 8px;border-color:#787777;border-width: 2px;margin-left: 80px;margin-right: 160px;">
-                      <img src="C:\Users\blessed\Documents\amin.png" style="max-width: 280px;max-height: 220px;">
-                      <p style="font-size: 16px;justify-content: center;align-items: center;color:#4A4A4A ;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-weight: bold;">Каминные топки</p>
-                      <p style="font-size: 16px;color: #000;width: 280px;justify-content: center;align-items: center;font-weight: bold;">Каминная топка <br>Астов АРТ М 700</p>
-                      <p style="font-size: 16px;color:#A70B0B ;font-weight: bold;">147 000 руб.</p>
-                      <p style="font-size: 16px;color:#000 ;">Арт. Н0023288</p>
-                      
-                  </div>
-              </td>
+                    <td style="border-bottom-width: 1px;border-bottom-color: #ece9e9;border-bottom-style: solid;height: 85px;">
+                      <a href="https://sbermarket.ru/" style="display: inline-block;color: inherit;text-decoration: none;" target="_blank" rel=" noopener noreferrer" previewlistener="true">
+                        <h1>Ломоносовский печной клуб</h1>
+                      </a>
+                    </td>
                   </tr>
-                  <tr style="height: 40px;"></tr>
-                    </tr>
-                  </table>
-                  
-              </section>
-              
-            
+                  <tr>
+                    <td style="padding: 30px 0 40px;">
+                      <span style="display: block;padding: 0 20px;">
+                        <strong style="display: block;font-size: 22px;font-weight: bold;margin: 10px 0;">
+                          Мы получили ваш заказ
+                          <br>
+                          и скоро менеджер свяжется 
+                          <br> 
+                          с вами  для уточнения деталей
+                        </strong>
+                      </span>
+                      <span style="display: block;padding: 0 20px;">
+                        <strong style="display: block;font-size: 22px;text-align: left;margin: 28px 0 20px;">
+                          Покупки
+                        </strong>
+                        {% for product in basket %}
+                        <table style="text-align: center;border-top-color: #ece9e9;border-top-style: solid;height: 97px;margin: 0;padding: 18px 0;border-width: 1px 0 0;" width="100%" cellpadding="0" cellspacing="0">
+                          <tbody style="vertical-align: top;">
+                            <tr>
+                              <td style="width: 84px;">
+                                <a target="_blank" href="{{ product.product_href }}" style="display: block;color: inherit;text-decoration: none;" rel=" noopener noreferrer" previewlistener="true">
+                                  <img alt="" src="{{ product.product_preview_img }}" style="display: block;max-height: 72px;max-width: 100%;margin: 0 auto;">
+                                </a>
+                              </td>
+                              <td style="padding-left: 15px;">
+                                <table style="width: 100%;">
+                                  <tbody>
+                                    <tr>
+                                      <td style="padding-right: 5px;width: 100%;" align="left" valign="top">
+                                        <span style="display: block;max-width: 320px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;">
+                                          <a target="_blank" href="{{ product.product_href }}" style="display: block;color: inherit;text-decoration: none;" rel=" noopener noreferrer" previewlistener="true">
+                                            {{ product.product_name }} {{ product.product_brand }}
+                                          </a>
+                                        </span>
+                                      </td>
+                                      <td style="color: #9f9f9f;white-space: nowrap;padding: 0 5px;" valign="top">
+                                        {{ product.product_amount }}
+                                      </td>
+                                      <td style="white-space: nowrap;min-width: 80px;" align="right" valign="top">
+                                        <span style="display: block;font-weight: bold;">
+                                          {{ product.product_price }} ₽
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table style="text-align: center;margin: 0;padding: 0;border: 0;" width="100%" cellpadding="0" cellspacing="0">
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <span style="display: block;color: #9f9f9f;text-align: left;">
+                                          Арт. {{ product.product_article }}
+                                        </span>
+                                      </td>
+                                      <td style="padding-left: 15px;">
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {% endfor %}
+                      </span>
+                      <span style="display: block;background-color: #ece9e9;height: 2px;margin-top: 20px;"></span>
+                      <span style="display: block;padding: 0 20px;">
+                        <table style="text-align: center;border-collapse: collapse;margin: 0 0 20px;padding: 0;border: 0;" width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff">
+                          <tbody>
+                            <tr style="border-top-width: 1px;border-top-color: #ece9e9;border-top-style: solid;height: 57px;font-size: 22px;">
+                              <td style="font-size: 22px;color: #3db21b;" align="left">
+                                <strong>
+                                  Итого:
+                                </strong>
+                              </td>
+                              <td align="right">
+                                <strong>
+                                  {{ sum }} ₽
+                                </strong>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </span>
+                      <span style="display: block;background-color: #ece9e9;height: 2px;margin-top: 20px;"></span>
+                      <span style="display: block;padding: 0 20px;">
+                        <strong style="display: block;font-size: 22px;text-align: left;margin: 28px 0 20px;">
+                          Доставка
+                        </strong>
+                        <table style="text-align: center;border-collapse: collapse;margin: 0 0 20px;padding: 0;border: 0;" width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff">
+                          <tbody>
+                            <tr style="border-top-width: 1px;border-top-color: #ece9e9;border-top-style: solid;">
+                              <td style="width: 25px;">
+                                <img alt="" src="https://nkamin.ru/storage/5377/conversions/-200.jpg" style="display: inline-block;max-height: 100%;max-width: 100%;height: 22px;width: 18px;">
+                              </td>
+                              <td style="padding: 20px 0 20px 20px;" align="left">
+                                {{ shipping_method }}
+                              </td>
+                            </tr>
+                            <tr style="border-top-width: 1px;border-top-color: #ece9e9;border-top-style: solid;">
+                              <td style="width: 25px;">
+                                <img alt="" src="https://nkamin.ru/storage/5377/conversions/-200.jpg" style="display: inline-block;max-height: 100%;max-width: 100%;height: 22px;width: 18px;">
+                              </td>
+                              <td style="padding: 20px 0 20px 20px;" align="left">
+                                {{ user_phone }}
+                              </td>
+                            </tr>
+                            <tr style="border-top-width: 1px;border-top-color: #ece9e9;border-top-style: solid;">
+                              <td style="width: 25px;">
+                                <img alt="" src="https://nkamin.ru/storage/5377/conversions/-200.jpg" style="display: inline-block;max-height: 100%;max-width: 100%;height: 22px;width: 18px;">
+                              </td>
+                              <td style="padding: 20px 0 20px 20px;" align="left">
+                                {{ user_name }} {{ user_surname }} {{ user_patronymic }}
+                              </td>
+                            </tr>
+                            <tr style="border-top-width: 1px;border-top-color: #ece9e9;border-top-style: solid;">
+                              <td style="width: 25px;">
+                                <img alt="" src="https://nkamin.ru/storage/5377/conversions/-200.jpg" style="display: inline-block;max-height: 100%;max-width: 100%;height: 22px;width: 18px;">
+                              </td>
+                              <td style="padding: 20px 0 20px 20px; line-height: 1.4; letter-spacing: .3px;" align="left">
+                                {{ area }}, {{ region }}, {{ city }}, {{ street }}, {{ num_of_house }}, {{ postcode }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table style="text-align: center;border-radius: 10px;line-height: 1.43;margin: 0 0 8px;padding: 0;border: 0;" bgcolor="#fff" width="100%" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td style="border-bottom-width: 1px;border-bottom-color: #ece9e9;border-bottom-style: solid;line-height: 1.43;padding: 30px 0 25px;" align="left">
+                      <span style="display: block;padding: 0 20px;">
+                        <strong style="display: block;margin-bottom: 6px;">
+                          Контактная информация
+                        </strong>
+                        <span style="display: block;">
+                          <a href="tel:+78002221100" style="display: inline;color: #fc4c04;text-decoration: underline;" target="_blank" rel=" noopener noreferrer"><span class="js-phone-number">+7-812-957-97-56</span></a>
+                          Для связи с менеджером по вопросам заказа
+                          <br>
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </center>
           </td>
-      </tr>
+        </tr>
+      </tbody>
     </table>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <div style="height: 80px"></div>
-      </td>
-  </tr>
-  <tr style="max-width: 1040px;max-height: 640px;border-radius: 10px;background-color:white ;">
-    <td align="center" style="max-width: 1040px;border-radius: 10px;">
-        
-      <div style="display: flex;font-weight: bold; min-height: 80px;justify-content: center;align-items: center;border-radius: 10px;background-color: white  ; font-size: 24px;color: black;font-family:Arial, Helvetica, sans-serif;font-style:normal;text-align: center;width: 100%;">
-        <p style="margin-top: 40px;margin-bottom: 40px;">Контактная информация менеджера</p>
-        <p style="display: flex;font-weight: normal;font-size: 20px;">
-        Для связи с менеджером по вопросам заказа, пожалуйста, используйте
-        следующий номер телефона: +7-812-957-97-56
-        </p>
-        </div>
-        
-    </td>
-</tr>
-  </table>
-
-</section>
+  </section>
 </body>
-
-
+</html>

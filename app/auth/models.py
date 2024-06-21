@@ -9,6 +9,7 @@ from app.db.session import Base
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "user"
+    area: Mapped[str] = mapped_column(String(50), nullable=True)
     region: Mapped[str] = mapped_column(String(50), nullable=True)
     city: Mapped[str] = mapped_column(String(50), nullable=True)
     street: Mapped[str] = mapped_column(String(50), nullable=True)
