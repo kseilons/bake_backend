@@ -47,12 +47,12 @@ class IOrderInfo(BaseModel):
     name: str
     surname: str
     patronymic: str
-    area: Optional[str]
-    region: Optional[str]
-    city: Optional[str]
-    street: Optional[str]
-    num_of_house: Optional[str]
-    postcode: Optional[int]
+    area: Optional[str] = None
+    region: Optional[str] = None
+    city: Optional[str] = None
+    street: Optional[str] = None
+    num_of_house: Optional[str] = None
+    postcode: Optional[int] = None
     ids: Optional[List[int]]
     
 class IOrderResponse(BaseModel):
