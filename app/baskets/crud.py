@@ -18,12 +18,14 @@ class CRUDBasket(CRUDBase[Basket, IBasketCreate, IBasketCreate]):
                 select(Basket)
                 .options(joinedload(Basket.items).joinedload(BasketItem.product).joinedload(Product.category))
                 .where(self.model.user_id == user_id)
-            ).order_by(id)
+            )
             response = await db_session.execute(query)
             basket = response.scalars().first()
             
             if not basket:
                 return None
+
+            basket.items.sort(key=lambda item: item.id)
 
             # Преобразование данных в Pydantic модели
             items = [
