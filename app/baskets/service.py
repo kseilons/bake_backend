@@ -62,7 +62,7 @@ async def send_email_for_manager(order_info: IOrderInfo, user: User, basket: Bas
     products_url = settings.FRONTEND_URL
     for item in basket.items:
         if (item.product_id in (order_info.ids)):
-            context['sum'] += item.price
+            context['sum'] += item.price * item.amount
             context['basket'].append({
                 "product_href": f"{products_url}/products/{item.product_id}",
                 "product_name": item.title,
@@ -102,7 +102,7 @@ async def send_email_for_user(order_info: IOrderInfo, user: User, basket: Basket
     products_url = settings.FRONTEND_URL
     for item in basket.items:
         if (item.product_id in (order_info.ids)):
-            context['sum'] += item.price
+            context['sum'] += item.price * item.amount
             context['basket'].append({
                 "product_href": f"{products_url}/products/{item.product_id}",
                 "product_name": item.title,
