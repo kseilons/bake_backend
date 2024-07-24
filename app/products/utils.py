@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from fastapi import Query
-from sqlalchemy import Select, Tuple
+from sqlalchemy import Select, Tuple, or_
 
 from app.products.models import Product
 from app.products.schemas import IProductFilterParams
@@ -18,7 +18,8 @@ async def get_product_filter_params(
     sort_order: str = Query("asc", description="Порядок сортировки (asc - по возрастанию, desc - по убыванию)"),
     is_hit: Optional[bool] = Query(None, description="Возвращает хит продукты"),
     is_new: Optional[bool] = Query(None, description="Возвращает новые продукты"),
-    is_sale: Optional[bool] = Query(None, description="Возвращает продукты со скидкой")
+    is_sale: Optional[bool] = Query(None, description="Возвращает продукты со скидкой"),
+    query: str = Query(None, description="Поисковая строка"),
 ) -> IProductFilterParams:
     return IProductFilterParams(
         min_price=min_price,
@@ -31,7 +32,8 @@ async def get_product_filter_params(
         sort_order=sort_order,
         is_hit=is_hit,
         is_new=is_new,
-        is_sale=is_sale
+        is_sale=is_sale,
+        query=query
     )
     
 async def apply_product_filter(query, params: IProductFilterParams):
@@ -51,4 +53,14 @@ async def apply_product_filter(query, params: IProductFilterParams):
         categories = await crud_category.get_categories_id_with_children(params.categories)
         print(categories)
         query = query.filter(Product.category_id.in_(categories))
+        
+    if params.query:
+        search_pattern = f"%{params.query}%"
+        query = query.where(
+            or_(
+                Product.title.ilike(search_pattern),
+                Product.article.ilike(search_pattern),
+                Product.brand.ilike(search_pattern)
+            )
+        )
     return query

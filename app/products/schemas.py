@@ -155,3 +155,4 @@ class IProductFilterParams(BaseModel):
     is_hit: Optional[bool] = Field(None, description="Возвращает хит продукты")
     is_new: Optional[bool] = Field(None, description="Возвращает новые продукты")
     is_sale: Optional[bool] = Field(None, description="Возвращает продукты со скидкой")
+    query: Optional[str] = Field(None, description="Поиск")
