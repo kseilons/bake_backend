@@ -14,7 +14,14 @@ from app.db.session import async_session_maker
 class CRUDCategory(CRUDBase[Category, ICategoryCreate, ICategoryUpdate]):
     async def get_by_parent_id(self, id: int):
         async with async_session_maker() as db_session:
-            query = select(self.model).options(joinedload(Category.children)).where(self.model.parent_id == id)
+            query = (
+                select(self.model)
+                .options(
+                    joinedload(Category.children),
+                    joinedload(Category.brands)
+                )
+                .where(self.model.parent_id == id)
+            )
             response = await db_session.execute(query)
             return response.scalars().unique()
         

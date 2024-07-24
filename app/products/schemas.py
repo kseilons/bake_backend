@@ -102,6 +102,7 @@ class IProduct(BaseModel):
     def from_orm(cls, product: Product):
         # Создаем объект IProduct из существующего объекта Product
         product_data = cls.model_validate(product.__dict__)
+        print(product.brand)
         # Обновляем его с помощью поля category_name
         return product_data.model_copy(update={"category_name": product.category.name if product.category else None})
     

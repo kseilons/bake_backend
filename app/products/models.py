@@ -2,6 +2,7 @@ import datetime
 from typing import List
 
 from app.categories.models import Category
+from app.categories.models import Brand
 
 from ..db.session import Base
 
@@ -24,10 +25,12 @@ class Product(Base):
     old_price: Mapped[int] = mapped_column(nullable=True)
     is_hit: Mapped[bool]
     brand: Mapped[str]
+    brand_id: Mapped[int] = mapped_column(ForeignKey('brand.id'))
     description: Mapped[str]
     article: Mapped[str]
     
     category: Mapped["Category"] = relationship()
+    brand_item: Mapped["Brand"] = relationship()
     properties: Mapped[List["ProductProperty"]] = relationship(back_populates="product", cascade="all, delete")
     images: Mapped[List["ProductImage"]] = relationship(back_populates="product", cascade="all, delete")
     files: Mapped[List["ProductFile"]] = relationship( back_populates="product", cascade="all, delete")

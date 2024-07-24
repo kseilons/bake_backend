@@ -3,7 +3,6 @@ from app.categories.crud import crud_category
 from app.categories.models import Category
 from app.categories.schemas import ICategoryCreate, ICategoryUpdate, ICategoryWithChildrenResponse
 from app.categories.utils import get_level_nesting
-from app.utils.exceptions.common_exception import IdNotFoundException
 
 async def create(catalog: ICategoryCreate):
     catalog.level_nesting = await get_level_nesting(catalog.parent_id)
