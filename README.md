@@ -26,7 +26,7 @@ alembic revision --autogenerate -m "Message"
 ## Работа с бекапом базы данных 
 Команда для создания бекапа:
 ```bash
-docker exec -t bake_db_container pg_dump -U bake_user bake_db > backup
+docker exec -t bake_db_container pg_dumpall -U bake_user > instance.bak
 ```
 
 Команда для загрузки бекапа:

@@ -13,6 +13,9 @@ services:
       - catalog_network
     env_file:
       - .env
+    volumes:
+      - ./app:/app/app
+      - ./alembic:/app/alembic
     depends_on:
       - db
 

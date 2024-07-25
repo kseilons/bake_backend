@@ -1,0 +1,4 @@
+UPDATE product p
+SET brand_id = b.id
+FROM brand b
+WHERE p.brand = b.name;

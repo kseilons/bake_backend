@@ -1,6 +1,8 @@
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.brand.schemas import IBrandResponse
+
 
 class ICategoryCreate(BaseModel):
     name: str = Field(None, description="Имя категории")
@@ -28,4 +30,6 @@ class ICategoryResponse(BaseModel):
 
 class ICategoryWithChildrenResponse(ICategoryResponse):
     children: Optional[list[ICategoryResponse]] = []
+    brands: Optional[list[IBrandResponse]] = None
 
+    model_config = ConfigDict(from_attributes=True)

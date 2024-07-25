@@ -1,8 +1,15 @@
-from sqlalchemy import  String, ForeignKey
+from sqlalchemy import  Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
 from ..db.session import Base
+
+    
+category_brand = Table(
+    'category_brand', Base.metadata,
+    Column('category_id', Integer, ForeignKey('category.id'), primary_key=True),
+    Column('brand_id', Integer, ForeignKey('brand.id'), primary_key=True)
+)
 
 
 class Category(Base):
@@ -23,4 +30,22 @@ class Category(Base):
         back_populates="parent", 
         overlaps="parent",
         cascade="all, delete-orphan"
+    )
+
+    brands: Mapped[list["Brand"]] = relationship(
+        "Brand",
+        secondary=category_brand,
+        back_populates="categories"
+    )
+
+
+class Brand(Base):
+    __tablename__ = "brand"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(unique=True)
+    
+    categories: Mapped[list["Category"]] = relationship(
+        "Category",
+        secondary=category_brand,
+        back_populates="brands"
     )
