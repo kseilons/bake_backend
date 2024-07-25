@@ -50,3 +50,7 @@ class IUser(schemas.BaseUser[uuid.UUID]):
     name: Optional[str] = None
     surname: Optional[str] = None
     patronymic: Optional[str] = None
+    
+class IOrderPhone(BaseModel):
+    phone: str
+    name: str
