@@ -1,16 +1,44 @@
+
+import json
+from logging import getLogger
+import logging.config
 import uvicorn
 
-from app.routers import users, categories, property_info, change_product
+
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from app.api.v1.api import api_router
+from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import ValidationException
+from fastapi.responses import JSONResponse
 
-app = FastAPI()
 
-app.include_router(users.router)
-app.include_router(categories.router,
-                   prefix="/categories")
-app.include_router(property_info.router,
-                   prefix="/property_info")
-app.include_router(change_product.router,
-                   prefix="/schem_product")
-# app.include_router(offers_property.router,
-#                    prefix="/offers-props")
+with open("app/core/logging.conf") as file:
+    config = json.load(file)
+logging.config.dictConfig(config)
+logger = getLogger()
+
+
+app = FastAPI(title="Bake Backend App")
+app.include_router(api_router)
+
+
+
+
+# Благодаря этой функции клиент видит ошибки, происходящие на сервере, вместо "Internal server error"
+@app.exception_handler(ValidationException)
+async def validation_exception_handler(request: Request, exc: ValidationException):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors()}),
+    )
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Здесь можно указать список разрешенных доменов
+    allow_credentials=True,
+    allow_methods=["POST", "GET", "PATCH", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
